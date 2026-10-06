@@ -619,6 +619,7 @@ function migrate(d){
     d.entities = (d.entities||[]).filter(n=> (d.logos||{})[n] || !titles.has(n));
   }
   d.version = 4; d.logos = d.logos || {}; d.entities = d.entities || [];
+  d.customStatuses = d.customStatuses || []; registerCustomStatuses(d.customStatuses);
   if (!d.preparedBy || d.preparedBy==='مقبل المقبل') d.preparedBy = 'قطاع حلول الأعمال';
   Object.values(d.reports).forEach(r=>{
     (r.tenders||[]).forEach(t=>{ if (t.kind==='previous') t.kind='active'; if (t.kind==='new') t.kind='awarded'; });
@@ -1145,11 +1146,23 @@ function editWorks(m){
     ov=>{ markReviewed(m,'works'); r.works=[...ov.querySelectorAll('#wl .frow')].map(f=>({title:f.querySelector('[data-f=title]').value.trim(),entity:f.querySelector('[data-f=entity]').value.trim(),desc:f.querySelector('[data-f=desc]').value.trim(),phase:f.querySelector('[data-f=phase]').value})).filter(w=>w.title||w.desc); }, true);
 }
 // Statuses
-function statusOpts(sel){ return Object.keys(STATUSES).map(k=>`<option value="${k}" ${k===sel?'selected':''}>${STATUSES[k].l}</option>`).join(''); }
+const CUSTOM_COLORS=['#e86fb5','#7bd389','#5aa9ff','#ffb4a2','#c7a6ff','#9be7e1','#d4b483','#ff8fab'];
+function registerCustomStatuses(list){ (list||[]).forEach(cs=>{ STATUSES[cs.k]={l:cs.l,c:cs.c}; if(!STATUS_ORDER.includes(cs.k)) STATUS_ORDER.splice(STATUS_ORDER.indexOf('onhold'),0,cs.k); }); }
+function statusOpts(sel){ return STATUS_ORDER.filter(k=>STATUSES[k]).map(k=>`<option value="${k}" ${k===sel?'selected':''}>${STATUSES[k].l}</option>`).join('') + `<option value="__new">＋ إضافة حالة جديدة…</option>`; }
+function statusChange(el){
+  if (el.value!=='__new'){ el.dataset.prev=el.value; return; }
+  const name=(prompt('اسم الحالة الجديدة:')||'').trim();
+  if (!name){ el.value=el.dataset.prev||'active'; return; }
+  let k=Object.keys(STATUSES).find(x=>STATUSES[x].l===name);
+  if (!k){ k='c'+Date.now(); const c=CUSTOM_COLORS[(S.customStatuses||[]).length%CUSTOM_COLORS.length];
+    S.customStatuses=S.customStatuses||[]; S.customStatuses.push({k,l:name,c}); registerCustomStatuses(S.customStatuses); save(); }
+  document.querySelectorAll('select[data-f=status]').forEach(x=>{ const v=x===el?k:x.value; x.innerHTML=statusOpts(v); x.value=v; x.dataset.prev=v; });
+  toast('أُضيفت الحالة «'+name+'» ✓');
+}
 function stRow(s){ const i=S.initiatives.find(x=>x.id===s.iid)||{id:s.iid,name:'',entity:''};
   return `<div class="frow" data-iid="${esc(i.id)}" style="grid-template-columns:auto 1.3fr .9fr .55fr 2fr auto">${rowLogoView(i.entity,'[data-f=entity]')}<input type="hidden" data-f="entity" value="${esc(i.entity)}">
     <input data-f="name" placeholder="اسم المبادرة" value="${esc(i.name)}">
-    <select data-f="status">${statusOpts(s.status)}</select><input data-f="progress" class="ltr" type="number" min="0" max="100" placeholder="%" value="${s.progress??''}">
+    <select data-f="status" data-prev="${esc(s.status)}" onchange="statusChange(this)">${statusOpts(s.status)}</select><input data-f="progress" class="ltr" type="number" min="0" max="100" placeholder="%" value="${s.progress??''}">
     <textarea data-f="update" placeholder="آخر مستجد">${esc(s.update)}</textarea>${rowTools()}</div>`; }
 function editStatuses(m){
   const r=S.reports[m];
