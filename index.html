@@ -1,0 +1,1352 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-theme="night">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>التقرير الشهري — ون</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+/* ═══════════ Themes ═══════════ */
+:root,[data-theme=night]{
+  color-scheme:dark;
+  --bg0:#010d14;--bg1:#03192a;--bg2:#062638;
+  --panel:rgba(6,38,56,.62);--panel2:rgba(10,50,72,.55);--solid:#052233;
+  --line:rgba(247,142,32,.20);--line2:rgba(145,182,187,.16);
+  --ink:#eaf3f5;--muted:#9db7c0;--soft:#6c8a95;
+  --a1:#F78E20;--a2:#F15A3E;--a3:#C2203D;--a4:#5E1042;
+  --ok:#3fdc97;--warn:#F78E20;--bad:#ff4d6d;
+  --grid:rgba(247,142,32,.05);--glowc:247,142,32;
+  --grad:linear-gradient(90deg,#5E1042,#C2203D,#F15A3E,#F78E20);
+  --logo-ink:#ffffff;
+}
+[data-theme=cyber]{
+  color-scheme:dark;
+  --bg0:#04060d;--bg1:#07101e;--bg2:#0c1830;
+  --panel:rgba(13,27,53,.62);--panel2:rgba(18,35,72,.55);--solid:#0a1733;
+  --line:rgba(0,229,255,.20);--line2:rgba(0,229,255,.12);
+  --ink:#d8eaff;--muted:#8aa6cc;--soft:#56709a;
+  --a1:#00e5ff;--a2:#6f6bff;--a3:#ff5af0;--a4:#2b3a8f;
+  --ok:#0fffa3;--warn:#ffb13b;--bad:#ff4d6d;
+  --grid:rgba(0,229,255,.06);--glowc:0,229,255;
+  --grad:linear-gradient(90deg,#6f6bff,#00e5ff);
+  --logo-ink:#ffffff;
+}
+[data-theme=plum]{
+  color-scheme:dark;
+  --bg0:#12040d;--bg1:#1d0816;--bg2:#2a0d21;
+  --panel:rgba(48,14,38,.6);--panel2:rgba(66,20,52,.55);--solid:#2a0d21;
+  --line:rgba(241,90,62,.24);--line2:rgba(241,90,62,.14);
+  --ink:#fbeaf1;--muted:#d4a9bd;--soft:#9a6f84;
+  --a1:#F15A3E;--a2:#F78E20;--a3:#ff7aa8;--a4:#5E1042;
+  --ok:#5fe0a6;--warn:#F78E20;--bad:#ff5c7a;
+  --grid:rgba(241,90,62,.05);--glowc:241,90,62;
+  --grad:linear-gradient(90deg,#C2203D,#F15A3E,#F78E20);
+  --logo-ink:#ffffff;
+}
+[data-theme=day]{
+  color-scheme:light;
+  --bg0:#eef4f6;--bg1:#f6f9fa;--bg2:#ffffff;
+  --panel:rgba(255,255,255,.92);--panel2:#f3f7f8;--solid:#ffffff;
+  --line:rgba(2,37,55,.13);--line2:rgba(2,37,55,.09);
+  --ink:#062330;--muted:#5f7c88;--soft:#8aa0aa;
+  --a1:#F78E20;--a2:#F15A3E;--a3:#C2203D;--a4:#5E1042;
+  --ok:#2fa874;--warn:#e57a12;--bad:#C2203D;
+  --grid:rgba(2,37,55,.04);--glowc:241,90,62;
+  --grad:linear-gradient(90deg,#5E1042,#C2203D,#F15A3E,#F78E20);
+  --logo-ink:#022537;
+}
+.logo .cls-8{fill:var(--logo-ink)!important}
+body.viewer .owner-only{display:none!important}
+.boot{position:fixed;inset:0;z-index:900;display:grid;place-items:center;background:var(--bg0);color:var(--muted);font-size:15px}
+
+/* ═══════════ Base ═══════════ */
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  font-family:"DIN Next LT Arabic","Tajawal","Segoe UI",Tahoma,Arial,sans-serif;
+  background:var(--bg0);color:var(--ink);line-height:1.6;font-weight:500;min-height:100vh;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    linear-gradient(var(--grid) 1px,transparent 1px) 0 0/48px 48px,
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/48px 48px,
+    radial-gradient(900px 500px at 85% -10%,rgba(var(--glowc),.14),transparent 60%),
+    radial-gradient(800px 500px at 0% 110%,rgba(94,16,66,.35),transparent 60%);
+}
+[data-theme=day] body::before{background:
+    linear-gradient(var(--grid) 1px,transparent 1px) 0 0/48px 48px,
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/48px 48px,
+    radial-gradient(900px 500px at 85% -10%,rgba(241,90,62,.08),transparent 60%)}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.012) 0 1px,transparent 1px 3px)}
+[data-theme=day] body::after{display:none}
+.num,.orb{font-family:"Orbitron","DIN Next LT Arabic","Tajawal",sans-serif;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+.wrap{position:relative;z-index:1;max-width:1360px;margin:0 auto;padding:20px 24px 60px}
+
+/* Glass panel + corner brackets */
+.glass{background:var(--panel);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:18px;position:relative}
+.brk::after{content:"";position:absolute;inset:7px;pointer-events:none;opacity:.7;
+  background:
+    linear-gradient(var(--a1),var(--a1)) top left/16px 2px no-repeat,linear-gradient(var(--a1),var(--a1)) top left/2px 16px no-repeat,
+    linear-gradient(var(--a1),var(--a1)) top right/16px 2px no-repeat,linear-gradient(var(--a1),var(--a1)) top right/2px 16px no-repeat,
+    linear-gradient(var(--a1),var(--a1)) bottom left/16px 2px no-repeat,linear-gradient(var(--a1),var(--a1)) bottom left/2px 16px no-repeat,
+    linear-gradient(var(--a1),var(--a1)) bottom right/16px 2px no-repeat,linear-gradient(var(--a1),var(--a1)) bottom right/2px 16px no-repeat}
+
+/* ═══════════ Header ═══════════ */
+header.top{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;padding:16px 22px;overflow:visible;z-index:100}
+.menu{backdrop-filter:none!important;background:var(--solid)!important;opacity:1}
+header.top::before{content:"";position:absolute;inset-inline:18px;bottom:-1px;height:2px;background:var(--grad);box-shadow:0 0 14px rgba(var(--glowc),.7);border-radius:2px}
+.brand{display:flex;align-items:center;gap:16px}
+.logo{height:56px;width:auto;display:block;filter:drop-shadow(0 0 10px rgba(var(--glowc),.25))}
+.brand h1{margin:0;font-size:24px;font-weight:800;background:linear-gradient(90deg,var(--ink),var(--a1));-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand .sub{color:var(--muted);font-size:13px}
+.live{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--ok);margin-inline-start:8px;vertical-align:middle}
+.live i{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok);animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.25}}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap;
+  background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px 13px;font-size:13px;font-weight:700;transition:.2s}
+.btn:hover{border-color:var(--a1);color:var(--a1);box-shadow:0 0 14px rgba(var(--glowc),.25)}
+.btn.primary{background:var(--grad);color:#fff;border-color:transparent}
+.btn.primary:hover{color:#fff;filter:brightness(1.1)}
+.btn.on{background:var(--a2);color:#fff;border-color:var(--a2)}
+.btn.danger:hover{border-color:var(--bad);color:var(--bad)}
+.btn.sm{padding:5px 10px;font-size:12px}
+.menu-wrap{position:relative}
+.menu{position:absolute;top:calc(100% + 8px);inset-inline-end:0;z-index:60;display:none;min-width:240px;padding:6px;background:var(--solid);border:1px solid var(--line);border-radius:12px;box-shadow:0 18px 40px rgba(0,0,0,.35)}
+.menu.open{display:block}
+.menu button{display:flex;align-items:center;gap:8px;width:100%;text-align:start;background:none;border:0;padding:9px 12px;border-radius:8px;cursor:pointer;font-size:13px}
+.menu button:hover{background:var(--panel2);color:var(--a1)}
+.menu hr{border:0;border-top:1px solid var(--line2);margin:4px 0}
+.menu .sw{width:16px;height:16px;border-radius:50%;flex-shrink:0;border:1px solid var(--line2)}
+.menu .ttl{font-size:11px;color:var(--soft);padding:6px 12px 2px}
+
+/* ═══════════ Tabs ═══════════ */
+.tabs{display:flex;gap:8px;margin:18px 0 4px;overflow-x:auto;padding:4px 2px 6px;align-items:center}
+.tab{flex-shrink:0;cursor:pointer;border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:9px 18px;font-weight:800;font-size:14px;transition:.2s;text-align:center}
+.tab small{display:block;font-size:10px;color:var(--soft);font-weight:500}
+.tab:hover{border-color:var(--a1)}
+.tab.active{background:var(--grad);color:#fff;border-color:transparent;box-shadow:0 0 18px rgba(var(--glowc),.4)}
+.tab.active small{color:rgba(255,255,255,.8)}
+.tab.year{border-style:solid}
+.tab{position:relative}
+.tab-x{position:absolute;top:-8px;inset-inline-start:-8px;width:22px;height:22px;border-radius:50%;background:var(--bad);color:#fff;font-size:11px;display:grid;place-items:center;box-shadow:0 0 10px var(--bad);cursor:pointer;z-index:2}
+.tab-x:hover{transform:scale(1.15)}
+.tab-rv{position:absolute;top:-8px;inset-inline-end:-6px;width:20px;height:20px;border-radius:50%;background:var(--a1);color:#021;font-size:12px;font-weight:800;display:grid;place-items:center;box-shadow:0 0 10px var(--a1)}
+.rv-banner{padding:16px 18px;border-color:var(--a1);background:linear-gradient(135deg,rgba(var(--glowc),.16),var(--panel))}
+.rv-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.rv-list span{font-size:12px;padding:3px 10px;border-radius:20px;border:1px dashed var(--a1);color:var(--a1)}
+.rv-list span.ok{border-style:solid;border-color:var(--ok);color:var(--ok)}
+.rv-chip{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--a1);border:1px dashed var(--a1);border-radius:20px;padding:3px 6px 3px 12px;background:rgba(var(--glowc),.08)}
+.rv-chip button{border:0;background:var(--a1);color:#021;font-weight:800;border-radius:14px;padding:2px 10px;cursor:pointer;font-size:11px}
+.btn.danger-fill{background:var(--bad);color:#fff;border-color:var(--bad)}
+.btn.danger-fill:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
+.tab.add{border-style:dashed;color:var(--a1);min-width:64px;border-color:var(--a1)}
+.tab.add:hover{background:rgba(var(--glowc),.12);box-shadow:0 0 14px rgba(var(--glowc),.35)}
+
+/* ═══════════ Sections ═══════════ */
+.sec{margin-top:28px;animation:rise .45s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.sec-h{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.sec-h .idx{font-size:12px;color:var(--a1);border:1px solid var(--line);border-radius:8px;padding:2px 8px;background:var(--panel)}
+.sec-h h2{margin:0;font-size:23px;font-weight:800}
+.sec-h .cnt{font-size:12px;color:var(--muted);background:var(--panel);border:1px solid var(--line2);border-radius:20px;padding:2px 10px}
+.sec-h .line{flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+[dir=rtl] .sec-h .line{background:linear-gradient(-90deg,var(--line),transparent)}
+.edit-only{display:none!important}
+body.editing .edit-only{display:inline-flex!important}
+.grid{display:grid;gap:14px}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:1050px){.g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.g3,.g4,.g2{grid-template-columns:1fr}}
+.card{background:var(--panel);backdrop-filter:blur(8px);border:1px solid var(--line2);border-radius:16px;padding:16px 18px;position:relative;transition:transform .2s,box-shadow .2s,border-color .2s;overflow:hidden}
+.card::before{content:"";position:absolute;top:0;inset-inline:16px;height:1px;background:linear-gradient(90deg,transparent,rgba(var(--glowc),.8),transparent);opacity:.6}
+.card.hov:hover{transform:translateY(-3px);border-color:var(--a1);box-shadow:0 0 0 1px rgba(var(--glowc),.25),0 14px 30px rgba(0,0,0,.25)}
+.card h3{margin:0;font-size:16px;font-weight:800}
+.card p{margin:8px 0 0;color:var(--muted);font-size:14px;line-height:1.75}
+.empty{color:var(--soft);font-size:14px;padding:4px 2px}
+
+/* Entity logo */
+.eh{display:flex;align-items:center;gap:12px}
+.eh .t{flex:1;min-width:0}
+.ent{font-size:12px;color:var(--soft)}
+.lg{width:62px;height:62px;border-radius:14px;flex-shrink:0;display:grid;place-items:center;overflow:hidden;
+  background:#fff;border:1px solid var(--line);box-shadow:0 0 0 3px rgba(var(--glowc),.06)}
+.lg img{width:94%;height:94%;object-fit:contain}
+.lg span{font-weight:800;font-size:17px;color:#022537}
+.lg.none{background:var(--panel2)}
+.lg.none span{color:var(--soft)}
+body.editing .lg{cursor:pointer;outline:1px dashed var(--a1);outline-offset:2px}
+
+/* Status */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.chip{cursor:pointer;border:1px solid var(--line2);background:var(--panel);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:.2s}
+.chip i{width:8px;height:8px;border-radius:50%;display:inline-block;box-shadow:0 0 6px currentColor}
+.chip.active{border-color:var(--a1);color:var(--a1);box-shadow:0 0 10px rgba(var(--glowc),.25)}
+.badge{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;font-size:12px;font-weight:800;padding:3px 11px;border-radius:20px;
+  color:var(--c);background:color-mix(in srgb,var(--c) 16%,transparent);border:1px solid color-mix(in srgb,var(--c) 45%,transparent)}
+.badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--c);box-shadow:0 0 6px var(--c)}
+.st{cursor:pointer;display:flex;flex-direction:column;gap:8px}
+.st .up{font-size:14px;color:var(--muted);line-height:1.75;flex:1}
+.prog{display:flex;align-items:center;gap:10px}
+.prog .bar{flex:1;height:8px;border-radius:8px;background:var(--panel2);overflow:hidden;border:1px solid var(--line2)}
+.prog .bar i{display:block;height:100%;border-radius:8px;background:var(--grad);box-shadow:0 0 10px rgba(var(--glowc),.6);transition:width .8s}
+.prog b{font-size:13px;min-width:42px;text-align:end}
+.prog.none b{font-family:inherit;color:var(--soft);font-weight:500;font-size:11px}
+.grp-h{display:flex;align-items:center;gap:10px;margin:22px 0 12px;font-size:15px}
+.grp-h:first-of-type{margin-top:6px}
+.grp-h i{width:10px;height:10px;border-radius:50%;background:var(--c);box-shadow:0 0 8px var(--c)}
+.grp-h b{color:var(--c);font-weight:800}
+.grp-h span.num{font-size:12px;color:var(--muted);border:1px solid var(--line2);border-radius:20px;padding:0 9px;background:var(--panel)}
+.grp-h .ln{flex:1;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--c),transparent);opacity:.55}
+[dir=rtl] .grp-h .ln{background:linear-gradient(-90deg,var(--c),transparent)}
+.chg{font-size:11px;font-weight:700;padding:1px 9px;border-radius:12px;background:var(--panel2);color:var(--muted);border:1px solid var(--line2)}
+.chg.new{color:#4cc3e6}.chg.upd{color:var(--a1)}.chg.up{color:var(--ok)}
+
+/* ═══════════ KPI dashboard panel ═══════════ */
+.dash{padding:18px;overflow:hidden}
+.dash-h{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.dash-h h2{margin:0;font-size:20px;font-weight:800}
+.dash-h .sp{flex:1}
+.dash-h select{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:12px}
+.kgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.kt{background:linear-gradient(160deg,var(--panel2),var(--panel));border:1px solid var(--line2);border-radius:16px;padding:14px 16px 12px;min-height:196px;display:flex;flex-direction:column;position:relative;overflow:hidden;transition:.25s}
+.kt::after{content:"";position:absolute;inset-inline-start:0;top:14px;bottom:14px;width:3px;border-radius:3px;background:var(--grad);box-shadow:0 0 12px rgba(var(--glowc),.8)}
+.kt:hover{transform:translateY(-3px);border-color:var(--a1);box-shadow:0 0 22px rgba(var(--glowc),.22)}
+.kt .kh{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.kt .kl{font-size:13px;color:var(--muted);font-weight:700}
+.kt .kic{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:rgba(var(--glowc),.12);color:var(--a1);font-size:14px}
+.kt .kb{flex:1;display:flex;align-items:center;justify-content:center;padding:6px 0}
+.kt .kf{display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:11px;color:var(--soft);min-height:18px}
+.kt .kv{font-size:34px;font-weight:800;line-height:1.1;text-shadow:0 0 18px rgba(var(--glowc),.35)}
+.kt .ku{font-size:12px;color:var(--muted);margin-top:2px;text-align:center}
+.kt .kd{font-size:11px;font-weight:800;padding:2px 8px;border-radius:10px}
+.kd.up{color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,transparent)}
+.kd.down{color:var(--bad);background:color-mix(in srgb,var(--bad) 14%,transparent)}
+.kd.flat{color:var(--muted);background:var(--panel2)}
+.kt .ktools{display:none;gap:4px}
+body.editing .kt .ktools{display:flex}
+.ktools button{border:1px solid var(--line);background:var(--panel2);border-radius:7px;min-width:24px;height:22px;cursor:pointer;font-size:11px;padding:0 6px}
+.ktools button:hover{color:var(--a1);border-color:var(--a1)}
+.ring-t{font-family:Orbitron,sans-serif;font-weight:800;fill:var(--ink)}
+.ring-s{font-size:9px;fill:var(--muted)}
+.mini-leg{display:flex;flex-direction:column;gap:3px;font-size:11px;color:var(--muted);min-width:0}
+.mini-leg span{display:flex;align-items:center;gap:5px;white-space:nowrap}
+.mini-leg i{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.mini-leg b{color:var(--ink);font-family:Orbitron,sans-serif;font-size:11px}
+
+/* ═══════════ Targets (year) ═══════════ */
+.tg{display:flex;flex-direction:column;gap:12px}
+.tg-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.tg-h h3{font-size:18px}
+.tg-h .type{font-size:12px;color:var(--soft)}
+.kv4{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.kv4 div{background:var(--panel2);border-radius:10px;padding:8px 10px;border:1px solid var(--line2)}
+.kv4 .l{font-size:11px;color:var(--muted);display:block}
+.kv4 .v{font-size:16px;font-weight:800;display:block;direction:ltr;text-align:right}
+.kv4 .n{font-size:11px;font-weight:700;display:block}
+.kv4 .good{border-color:color-mix(in srgb,var(--ok) 45%,transparent)} .kv4 .good .n{color:var(--ok)}
+.kv4 .bad{border-color:color-mix(in srgb,var(--bad) 40%,transparent)} .kv4 .bad .n{color:var(--bad)}
+.pace{font-size:12px;color:var(--muted);border-top:1px dashed var(--line2);padding-top:8px}
+.pace-bar{position:relative;height:9px;border-radius:9px;background:var(--panel2);border:1px solid var(--line2);margin:6px 0 5px}
+.pace-bar i{position:absolute;inset-block:0;inset-inline-start:0;border-radius:9px;box-shadow:0 0 10px currentColor}
+.pace-bar em{position:absolute;top:-5px;bottom:-5px;width:2px;background:var(--ink);box-shadow:0 0 6px var(--ink)}
+.mom{font-size:12px;font-weight:700}
+.mom.up{color:var(--ok)}.mom.down{color:var(--bad)}.mom.flat{color:var(--muted)}
+.plot{display:flex;align-items:flex-end;gap:6px;height:120px;position:relative;border-bottom:1px solid var(--line2)}
+.plot .col{flex:1;height:100%;display:flex;align-items:flex-end;justify-content:center}
+.plot .col i{display:block;width:100%;max-width:24px;border-radius:5px 5px 0 0;transition:height .8s}
+.plot .tline{position:absolute;inset-inline:0;border-top:2px dashed var(--soft);pointer-events:none}
+.plot-l{display:flex;gap:6px;margin-top:4px}
+.plot-l span{flex:1;text-align:center;font-size:10px;color:var(--soft)}
+.plot-l span.cur{color:var(--a1);font-weight:800}
+
+/* Financial / tenders / tables */
+.fl{margin-top:12px;padding-top:10px;border-top:1px dashed var(--line2);display:flex;flex-direction:column;gap:7px}
+.fl-r{display:grid;grid-template-columns:auto 1fr 60px auto;align-items:center;gap:8px;font-size:13px}
+.fl-n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+.fl-b{height:5px;border-radius:5px;background:var(--panel2);overflow:hidden}
+.fl-b i{display:block;height:100%;background:var(--grad);box-shadow:0 0 6px rgba(var(--glowc),.6)}
+.fl-r b{font-size:12px;min-width:70px;text-align:end}
+.fl-more,.fl-empty{font-size:11px;color:var(--soft);margin-top:8px}
+.lg.sm{width:36px;height:36px;border-radius:9px}
+.lg.pick{position:relative;cursor:pointer;outline:1px dashed var(--a1);outline-offset:2px}
+.lg.pick:hover{box-shadow:0 0 12px rgba(var(--glowc),.5)}
+.pick-caret{position:absolute;bottom:-2px;inset-inline-start:-2px;font-style:normal;font-size:9px;background:var(--a1);color:#021;border-radius:6px;padding:0 3px;line-height:14px}
+.lpick{position:fixed;z-index:700;width:310px;max-height:370px;display:flex;flex-direction:column;background:var(--solid);border:1px solid var(--a1);border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.45),0 0 20px rgba(var(--glowc),.25);overflow:hidden}
+.lp-s{margin:10px;background:var(--bg1);border:1px solid var(--line2);border-radius:9px;padding:8px 10px;font-size:14px}
+.lp-s:focus{outline:none;border-color:var(--a1)}
+.lp-l{flex:1;overflow:auto;padding:0 6px}
+.lp-i{display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:9px;cursor:pointer;font-size:14px}
+.lp-i:hover,.lp-i.on{background:rgba(var(--glowc),.12)}
+.lp-i span{flex:1}
+.lp-i em{font-style:normal;font-size:10px;color:var(--soft)}
+.lp-add{color:var(--a1);font-weight:700}
+.lp-f{display:flex;gap:6px;padding:8px 10px;border-top:1px solid var(--line2)}
+.lg.sm span{font-size:10px}
+.fin .l{font-size:13px;color:var(--muted)}
+.fin .v{font-size:23px;font-weight:800;margin-top:4px}
+.fin .note{font-size:11px;color:var(--soft);margin-top:2px}
+.fin.hero{background:linear-gradient(135deg,rgba(var(--glowc),.22),var(--panel));border-color:var(--a1)}
+.fin.hero .v{font-size:30px;text-shadow:0 0 18px rgba(var(--glowc),.4)}
+.tbl{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line2);border-radius:14px;overflow:hidden}
+.tbl th,.tbl td{padding:10px 12px;text-align:start;border-bottom:1px solid var(--line2);font-size:14px;vertical-align:middle}
+.tbl th{font-size:12px;color:var(--muted);background:var(--panel2)}
+.tbl tr:hover td{background:rgba(var(--glowc),.05)}
+.tbl .lg{width:44px;height:44px;border-radius:10px}
+.tbl .lg span{font-size:12px}
+.mx td{text-align:center}.mx td:first-child{text-align:start}
+.ch2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px}
+.ch2 .lbl{font-size:11px;color:var(--soft);display:block}
+.ch2 p{margin:2px 0 0}
+.auto-tag{font-size:11px;color:var(--soft);border:1px dashed var(--line2);border-radius:10px;padding:1px 8px}
+.stack{display:flex;height:22px;border-radius:8px;overflow:hidden;border:1px solid var(--line2);flex:1}
+.stack i{display:block;height:100%}
+.row-m{display:flex;align-items:center;gap:12px;margin:8px 0}
+.row-m b{min-width:70px;font-size:13px}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--muted);margin-top:10px}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.mhead{display:flex;align-items:center;gap:10px;margin:18px 0 10px;font-weight:800;color:var(--a1)}
+.mhead::after{content:"";flex:1;height:1px;background:var(--line2)}
+.hint{font-size:12px;color:var(--muted);margin:0 0 12px;line-height:1.7}
+
+footer.foot{margin-top:40px;padding-top:14px;border-top:1px solid var(--line2);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;color:var(--soft);font-size:12px;position:relative;z-index:1}
+
+/* ═══════════ Modal ═══════════ */
+.ov{position:fixed;inset:0;background:rgba(0,8,14,.65);backdrop-filter:blur(5px);z-index:200;display:flex;align-items:center;justify-content:center;padding:18px}
+.md{background:var(--solid);border-radius:18px;width:min(940px,100%);max-height:90vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.45);border:1px solid var(--line);overflow:hidden}
+.md-h{display:flex;align-items:center;justify-content:space-between;padding:15px 20px;border-bottom:1px solid var(--line2);position:relative}
+.md-h::after{content:"";position:absolute;inset-inline:0;top:0;height:3px;background:var(--grad)}
+.md-h h3{margin:0;font-size:18px}
+.md-b{padding:16px 20px;overflow:auto}
+.md-f{display:flex;gap:8px;justify-content:flex-end;padding:12px 20px;border-top:1px solid var(--line2)}
+.x{background:none;border:0;font-size:22px;cursor:pointer;color:var(--muted)}
+.frow{display:grid;gap:8px;align-items:start;padding:10px;border:1px solid var(--line2);border-radius:12px;margin-bottom:8px;background:var(--panel2)}
+.frow input,.frow select,.frow textarea,.fld input,.fld select,.fld textarea{width:100%;background:var(--bg1);border:1px solid var(--line2);border-radius:8px;padding:8px 10px;font-size:14px}
+.frow textarea,.fld textarea{min-height:58px;resize:vertical;line-height:1.6}
+.frow input:focus,.frow select:focus,.frow textarea:focus,.fld input:focus,.fld select:focus{outline:none;border-color:var(--a1)}
+.fld{margin-bottom:12px}
+.fld label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:700}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ic{display:flex;gap:4px}
+.ic button{border:1px solid var(--line2);background:var(--bg1);border-radius:8px;width:30px;height:30px;cursor:pointer}
+.ic button:hover{border-color:var(--a1);color:var(--a1)}
+.ic .drag{display:grid;place-items:center;width:30px;height:30px;border-radius:8px;border:1px solid var(--line2);background:var(--bg1);cursor:grab;font-size:16px;color:var(--muted);touch-action:none;user-select:none}
+.ic .drag:hover{border-color:var(--a1);color:var(--a1)}
+.frow.dragging{cursor:grabbing;opacity:.95;box-shadow:0 18px 40px rgba(0,0,0,.45),0 0 0 2px var(--a1);background:var(--solid);pointer-events:none}
+.frow-ph{border:2px dashed var(--a1);border-radius:12px;margin-bottom:8px;background:rgba(var(--glowc),.07)}
+.frow.dropped{animation:dropflash .5s ease}
+@keyframes dropflash{from{box-shadow:0 0 0 2px var(--a1),0 0 18px rgba(var(--glowc),.5)}to{box-shadow:none}}
+.ltr{direction:ltr;text-align:right}
+.mgrid{width:100%;border-collapse:collapse}
+.mgrid th,.mgrid td{border:1px solid var(--line2);padding:4px;font-size:12px;text-align:center}
+.mgrid input{width:100%;border:0;background:transparent;padding:5px;text-align:center;direction:ltr}
+.mgrid input:focus{outline:2px solid var(--a1)}
+.lgrow{display:flex;align-items:center;gap:12px;padding:8px 10px;border:1px solid var(--line2);border-radius:12px;margin-bottom:6px;background:var(--panel2)}
+.lgrow .n{flex:1}
+
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);opacity:0;background:var(--grad);color:#fff;padding:10px 18px;border-radius:12px;font-size:14px;z-index:500;transition:.3s;pointer-events:none;font-weight:700}
+.toast.show{opacity:1;transform:translateX(-50%)}
+
+/* ═══════════ TV ═══════════ */
+.tv{position:fixed;inset:0;z-index:400;background:var(--bg0);display:none;flex-direction:column}
+.tv::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(var(--grid) 1px,transparent 1px) 0 0/48px 48px,linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/48px 48px,radial-gradient(900px 500px at 85% -10%,rgba(var(--glowc),.16),transparent 60%)}
+body.tvmode .tv{display:flex}
+body.tvmode{overflow:hidden}
+body.tvmode .edit-only,body.tvmode .ktools{display:none!important}
+.tv-top{display:flex;align-items:center;justify-content:space-between;padding:1.4vh 3vw;position:relative;border-bottom:1px solid var(--line)}
+.tv-top::after{content:"";position:absolute;inset-inline:0;bottom:-1px;height:2px;background:var(--grad);box-shadow:0 0 14px rgba(var(--glowc),.7)}
+.tv-top .logo{height:6vh}
+.tv-top .tt{font-size:clamp(16px,2vw,30px);font-weight:800}
+.tv-top .mm{font-size:clamp(13px,1.3vw,20px);color:var(--a1)}
+.tv-stage{flex:1;position:relative;overflow:hidden}
+.tv-slide{position:absolute;inset:0;padding:2.5vh 3vw;opacity:0;transition:opacity .7s,transform .7s;transform:scale(.97);pointer-events:none}
+.tv-slide.on{opacity:1;transform:none;pointer-events:auto}
+.tv-fit{transform-origin:top center;width:100%}
+.tv-slide .sec{margin-top:0;animation:none}
+.tv-cover{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:2.5vh}
+.tv-cover .logo{height:18vh}
+.tv-cover h1{font-size:clamp(34px,5vw,84px);margin:0;font-weight:800;background:linear-gradient(90deg,var(--ink),var(--a1));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tv-cover .m{font-size:clamp(18px,2.4vw,40px);color:var(--a1);font-weight:800}
+.tv-ctl{display:flex;align-items:center;justify-content:center;gap:10px;padding:1.1vh;border-top:1px solid var(--line2);position:relative}
+.tv-ctl .dots{display:flex;gap:6px}
+.tv-ctl .dots i{width:9px;height:9px;border-radius:9px;background:var(--line);cursor:pointer;transition:.3s}
+.tv-ctl .dots i.on{width:28px;background:var(--a1);box-shadow:0 0 8px var(--a1)}
+.tv-prog{height:3px;background:var(--grad);width:0;box-shadow:0 0 8px rgba(var(--glowc),.8)}
+
+/* ═══════════ Print ═══════════ */
+@media print{
+  @page{size:A4;margin:10mm}
+  body::after{display:none}
+  .tools,.tabs,.edit-only,.chips,.toast,.tv,.no-print,.ktools{display:none!important}
+  .sec{animation:none}
+  .card,.kt{break-inside:avoid}
+  .sec-h{break-after:avoid}
+  .card.hov:hover,.kt:hover{transform:none}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="gOne" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--a1)"/><stop offset="1" style="stop-color:var(--a3)"/></linearGradient>
+  <linearGradient id="gFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--a1);stop-opacity:.55"/><stop offset="1" style="stop-color:var(--a1);stop-opacity:0"/></linearGradient>
+</defs></svg>
+
+<div class="wrap">
+  <header class="top glass">
+    <div class="brand">
+      <span id="logoSlot"></span>
+      <div>
+        <h1>التقرير الشهري</h1>
+        <div class="sub"><span id="hdrSub"></span><span class="live"><i></i>محدّث</span></div>
+      </div>
+    </div>
+    <div class="tools">
+      <button class="btn owner-only" id="btnEdit" onclick="toggleEdit()">✎ وضع التحرير</button>
+      <button class="btn" onclick="startTV()">📺 وضع العرض</button>
+      <button class="btn" onclick="window.print()">🖨 طباعة / PDF</button>
+      <div class="menu-wrap">
+        <button class="btn" onclick="toggleMenu(event)">◐ الثيم / المزيد</button>
+        <div class="menu" id="moreMenu">
+          <div class="ttl">الثيم</div>
+          <button onclick="setTheme('night')"><i class="sw" style="background:linear-gradient(135deg,#022537,#F78E20)"></i>ون الليلي</button>
+          <button onclick="setTheme('plum')"><i class="sw" style="background:linear-gradient(135deg,#5E1042,#F15A3E)"></i>ون العنّابي</button>
+          <button onclick="setTheme('cyber')"><i class="sw" style="background:linear-gradient(135deg,#04060d,#00e5ff)"></i>سايبر (نمط المنصّة السابقة)</button>
+          <button onclick="setTheme('day')"><i class="sw" style="background:linear-gradient(135deg,#fff,#F15A3E)"></i>ون النهاري</button>
+          <div class="owner-only" style="display:contents">
+          <hr>
+          <button onclick="openSettings()">⚙ الإعدادات والمستهدفات والشعارات</button>
+          <button onclick="exportJSON()">⬇ حفظ نسخة احتياطيّة (ملف)</button>
+          <button onclick="document.getElementById('imp').click()">⬆ استيراد نسخة</button>
+          <button onclick="exportPublish()">📤 تصدير ملف النشر (data.json)</button>
+          <hr>
+          <button onclick="resetAll()">⟲ استرجاع البيانات الأصليّة</button>
+          </div>
+        </div>
+      </div>
+      <input type="file" id="imp" accept=".json,application/json" style="display:none" onchange="importJSON(this)">
+      <input type="file" id="logoPick" accept="image/*" style="display:none">
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs"></nav>
+  <main id="view"></main>
+
+  <footer class="foot">
+    <span id="footL"></span>
+    <span>يُحفظ كل تعديل تلقائياً في هذا المتصفح · لنقل البيانات استخدم «حفظ نسخة» ثم «استيراد»</span>
+  </footer>
+</div>
+
+<div class="tv" id="tv">
+  <div class="tv-top"><span id="tvLogo"></span><div style="text-align:center"><div class="tt">التقرير الشهري</div><div class="mm" id="tvMonth"></div></div><span class="live" style="width:10vw;justify-content:flex-end"><i></i>عرض مباشر</span></div>
+  <div class="tv-prog" id="tvProg"></div>
+  <div class="tv-stage" id="tvStage"></div>
+  <div class="tv-ctl">
+    <button class="btn" onclick="tvShow(tv.i-1)">→ السابق</button>
+    <button class="btn" id="tvPlay" onclick="tvToggle()">⏸ إيقاف</button>
+    <div class="dots" id="tvDots"></div>
+    <button class="btn" onclick="tvShow(tv.i+1)">التالي ←</button>
+    <button class="btn danger" onclick="stopTV()">✕ خروج</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<datalist id="entList"></datalist>
+
+<script>
+const LOGO = `<svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1200"><defs><style>.cls-1{fill:#5e1042}.cls-2{fill:#441219}.cls-3{fill:#c2203d}.cls-4{fill:#b62025}.cls-5{fill:#e63625}.cls-6{fill:#f15a3e}.cls-7{fill:#f78e20}.cls-8{fill:#022537}</style></defs><g><path class="cls-7" d="m475.12,821.33l-194.44,60.2c-7.820,2.42-15.66,2.01-22.64-.47-15.3,21.06-24.14,46.83-24.14,74.2v134.74h266.64v-303.15c0,15.82-10.31,29.8-25.42,34.48Z"/><path class="cls-6" d="m468.77,574l-176.41,54.62c-8.68,2.69-17.38,2.58-25.34.37l-15.25,8.92c-11.07,6.48-17.87,18.33-17.87,31.16v177.99c0,16.13,10.38,29.14,24.14,34.02,15.65-21.54,38.06-38.15,64.79-46.43l177.71-55.02v-224.33c0-4.130-.73-8-1.95-11.6-4.21,14.19-15.16,25.77-29.83,30.31Z"/><path class="cls-5" d="m258.04,881.07c6.98,2.47,14.82,2.89,22.64.47l194.44-60.2c15.12-4.68,25.42-18.66,25.42-34.48v-7.23l-177.71,55.02c-26.74,8.28-49.15,24.89-64.79,46.43Z"/><path class="cls-1" d="m248.94,362.5l149.66-133.91c25.65-22.95,61.11-19.09,82.73.98l19.21-17.9-.83-100.71h-174.18L53.12,260.38v118.05h180.78v17.69c0-12.83,5.47-25.06,15.03-33.62Z"/><path class="cls-3" d="m481.33,229.58l-247.43,230.57v125.37c0,21.3,14.47,38.28,33.12,43.46l179.19-104.85c20.5-11.99,45.42-1.14,52.38,19.55,1.21-4.09,1.95-8.36,1.95-12.78v-256.73c0-18.44-7.62-33.84-19.21-44.6Z"/><path class="cls-4" d="m446.22,524.13l-179.19,104.85c7.95,2.21,16.66,2.32,25.34-.37l176.41-54.620c14.67-4.54,25.62-16.12,29.83-30.31-6.96-20.7-31.890-31.55-52.380-19.55Z"/><path class="cls-2" d="m398.6,228.59l-149.66,133.91c-9.57,8.56-15.03,20.79-15.03,33.62v64.03l247.43-230.57c-21.62-20.07-57.08-23.94-82.73-.98Z"/></g><g><path class="cls-8" d="m1077.2,423.49c1.05.37,2.24.44,3.42.07l29.4-9.1c2.29-.71,3.85-2.82,3.85-5.21v-35.02c0-.63-.11-1.21-.3-1.75-1.05-3.13-4.82-4.77-7.92-2.96l-27.1,15.86-2.31,1.35c-1.670.98-2.7,2.77-2.7,4.71v26.92c0,2.44,1.57,4.41,3.65,5.14Z"/><path class="cls-8" d="m1167.02,515.8c0,22.28-6.17,38.39-18.52,48.33-12.35,9.94-28.16,14.91-47.43,14.91-7.84,0-28.08-1.06-36.22-3.16-8.13-2.11-15.66-5.64-22.59-10.61-6.93-4.97-12.58-11.74-16.94-20.32-4.36-8.58-6.55-19.35-6.55-32.29s2.48-26.49,7.45-38.84c4.97-12.34,10.16-22.73,15.58-31.17,1.5-2.41,1.05-4.36-1.36-5.87l-24.84-13.55c-3.01-1.81-5.12-1.65-6.32.45-7.83,11.14-14.68,24.92-20.55,41.33-5.87,16.42-8.81,33.5-8.81,51.26,0,15.96,2.55,30.04,7.68,42.23,5.12,12.19,12.26,22.5,21.45,30.94,9.18,8.43,20.33,14.83,33.43,19.19,13.1,4.36,40.06,6.55,56.32,6.55,34.32,0,60.59-8.74,78.81-26.2,18.21-17.47,27.33-41.71,27.33-72.72v-147.5h-37.94v147.05Z"/><path class="cls-8" d="m1424.44,355.69c-15.06-15.5-35.98-23.26-62.78-23.26-12.05,0-23.34,2.03-33.87,6.1-10.54,4.07-19.8,10.24-27.78,18.52-7.98,8.29-14.23,18.82-18.74,31.62-4.51,12.8-6.77,27.78-6.77,44.94s1.96,31.62,5.87,43.36c3.91,11.74,9.63,21.16,17.16,28.23,7.52,7.08,16.63,12.19,27.33,15.36,10.69,3.16,22.65,4.74,35.91,4.74h48.33v11.74c0,8.43-1.06,15.43-3.16,21-2.11,5.57-5.05,9.94-8.81,13.1-3.77,3.16-8.21,5.42-13.32,6.78-5.12,1.36-10.69,2.03-16.71,2.03-71.99,0-41.31-.01-113.3-.05-.33,0-.65,0-.98,0l-12.28,35.28h128.36c11.75,0,22.43-1.51,32.07-4.52,9.63-3.01,17.84-7.68,24.61-14,6.77-6.32,12.04-14.45,15.81-24.39,3.76-9.94,5.65-21.98,5.65-36.13v-105.24c0-34.62-7.53-59.69-22.59-75.2Zm-15.35,134.37h-45.62c-16.87,0-29.59-4.07-38.17-12.2-8.58-8.13-12.87-22.88-12.87-44.26,0-19.87,4.36-35.83,13.1-47.88,8.73-12.04,20.78-18.07,36.13-18.07,16.86,0,28.97,5.57,36.36,16.71,7.37,11.14,11.07,26.65,11.07,46.52v59.17Z"/><path class="cls-8" d="m859.18,654.76c-19.62,0-36.85,3.68-51.69,11.04-14.84,7.36-27.23,17.23-37.17,29.62-9.94,12.39-17.36,26.72-22.26,42.98-4.91,16.26-7.36,33.3-7.36,51.11,0,41.04,9.62,73.38,28.85,97,19.23,23.62,48.21,35.43,86.93,35.43,18.85,0,35.56-3.61,50.14-10.84,14.59-7.23,26.85-16.91,36.78-29.04,9.94-12.13,17.49-26.4,22.65-42.79,5.17-16.39,7.75-33.75,7.75-52.08,0-41.56-9.55-74.02-28.65-97.38-19.1-23.36-47.76-35.04-85.97-35.04Zm55.18,208.52c-13.3,18.2-32.33,27.3-57.11,27.3-26.85,0-46.59-8.78-59.24-26.33-12.65-17.55-18.97-43.63-18.97-78.22,0-14.71,1.74-28.27,5.22-40.66,3.49-12.39,8.52-22.91,15.1-31.56,6.58-8.65,14.72-15.42,24.4-20.33,9.68-4.9,20.84-7.36,33.49-7.36,25.56,0,44.79,8.84,57.7,26.52,12.91,17.68,19.36,43.43,19.36,77.25,0,30.72-6.65,55.18-19.94,73.38Z"/><path class="cls-8" d="m1124.49,710.26c-15.73,0-28.77,2.97-39.12,8.9-10.35,5.93-18.28,14.56-23.8,25.87v-30.22l-34.35,2.48v195.37h36.01v-153.15c6.07-5.52,13.52-10.07,22.35-13.66,8.83-3.59,18.08-5.38,27.73-5.38,12.97,0,22.77,3.52,29.39,10.56,6.62,7.04,9.94,18.42,9.94,34.15v127.49h36.01v-134.11c0-22.08-5.66-38.98-16.97-50.71-11.31-11.73-27.04-17.59-47.19-17.59Z"/><path class="cls-8" d="m1287.97,871.69c-10.25-9.61-15.45-25.8-16.56-47.6h124.18c2.48-16.83,2.97-32.29,1.45-46.36-1.52-14.07-5.11-26.08-10.76-36.01-5.66-9.93-13.45-17.73-23.39-23.39-9.93-5.66-22.21-8.49-36.84-8.49s-28.08,2.83-39.53,8.49c-11.46,5.66-21.04,13.52-28.77,23.59-7.73,10.07-13.59,22.08-17.59,36.01-4,13.94-6,29.18-6,45.74,0,28.7,7.59,51.74,22.77,69.13,15.18,17.38,42.48,26.08,63.33,26.08,14.9,0,97.31-.4,97.31-.4l11.46-33.11-100.07,1.23s-25.8-.66-40.98-14.9Zm.62-115.9c9.25-9.93,20.22-14.9,32.91-14.9s23.6,4,31.05,12c7.45,8,10.9,22.08,10.35,42.22l-91.06,4.97c1.93-19.59,7.52-34.36,16.76-44.29Z"/></g></svg>`;
+
+const MONTHS = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+const STATUSES = {
+  active:{l:'نشط',c:'#3fdc97'}, new:{l:'جديد',c:'#4cc3e6'}, negotiation:{l:'قيد التفاوض',c:'#a68bff'},
+  awaiting:{l:'بانتظار الاعتماد',c:'#f2c14e'}, onhold:{l:'معلّق',c:'#F78E20'}, atrisk:{l:'متعثّر',c:'#ff4d6d'},
+  completed:{l:'مكتمل',c:'#2fb9c9'}, cancelled:{l:'ملغى',c:'#8aa0aa'}
+};
+// ترتيب العرض: النشطة أولاً ثم بقية الحالات، والمعلّقة في الأخير
+const STATUS_ORDER = ['active','new','negotiation','awaiting','completed','atrisk','cancelled','onhold'];
+const SEVERITY = { high:{l:'عالية',c:'#ff4d6d'}, medium:{l:'متوسطة',c:'#F78E20'}, low:{l:'منخفضة',c:'#4cc3e6'} };
+const VARIANTS = { number:'رقم', ring:'حلقة', arc:'عدّاد', bars:'أعمدة', spark:'منحنى', donut:'دونات' };
+const STORE_KEY = 'one_monthly_report_v1';
+
+// ═══════════ Default data (تقرير يوليو 2026) ═══════════
+function defaults(){
+  return {
+    version: 2, year: 2026, preparedBy: 'قطاع حلول الأعمال', audience: 'الرئيس التنفيذي', autoChallenges: true,
+    logos: {},
+    initiatives: [
+      { id:'i1',  name:'سنام 2', entity:'نادي الإبل' },
+      { id:'i2',  name:'بلوت رويال', entity:'' },
+      { id:'i3',  name:'منصة ناموس', entity:'' },
+      { id:'i4',  name:'التوعية الدولية', entity:'وزارة الحج والعمرة' },
+      { id:'i5',  name:'عقد نسك', entity:'مؤسسة نسك الإنسانية' },
+      { id:'i6',  name:'شبكة وطن', entity:'وزارة الاتصالات' },
+      { id:'i7',  name:'الحائط الثامن', entity:'هيئة الحرمين الشريفين' },
+      { id:'i8',  name:'منصة غرس', entity:'مؤسسة نسك الإنسانية' },
+      { id:'i9',  name:'البرنامج التلفزيوني ناموس', entity:'قناة الصحراء' },
+      { id:'i10', name:'فضائي', entity:'وكالة الفضاء السعودية' },
+      { id:'i11', name:'مزاد الملوك', entity:'' },
+      { id:'i12', name:'معرض الـ 300 عام', entity:'' }
+    ],
+    targets: [
+      { id:'revenue',  name:'الإيرادات المتحقّقة', type:'مالي', annual:50000000, money:true },
+      { id:'offers',   name:'عروض',   type:'فني', annual:24 },
+      { id:'projects', name:'مشاريع', type:'فني', annual:8 },
+      { id:'opps',     name:'فرص',    type:'فني', annual:10 }
+    ],
+    achievements: {
+      '1': { revenue:7223686, offers:15, projects:3, opps:4 },
+      '7': { revenue:2800000, offers:3,  projects:0, opps:2 }
+    },
+    reports: {
+      '7': {
+        works: [
+          { title:'مشروع ممكنات الإسكان', entity:'', desc:'اعتماد الملف التسويقي وانطلاق اجتماعات الشركات العقاريّة' },
+          { title:'عقد نسك', entity:'مؤسسة نسك الإنسانية', desc:'بناء صيغة التعاقد مع مؤسسة نسك الإنسانية لتشغيل مبادرات مركز توعية ضيوف الرحمن.' },
+          { title:'ناموس', entity:'', desc:'العرض على النادي وإرسال العقد' },
+          { title:'سنام 2', entity:'نادي الإبل', desc:'متابعة التنفيذ مع الشريك التقني والتجهيزات مع الشريك الاتصالي' },
+          { title:'باور', entity:'شركة باور', desc:'عقد لقاء مع شركة باور لبحث سبل التعاون معهم فيما يتعلّق بملف سنام' },
+          { title:'رعاية الليوان', entity:'هيئة تطوير عسير', desc:'تجهيز ملف خاصّ بهيئة تطوير عسير وبانتظار ترتيب اجتماع' },
+          { title:'فضائي', entity:'وكالة الفضاء السعودية', desc:'تم إنشاء عرض وتطوير فكرة لمنتجات وكالة الفضاء السعودية وبانتظار تحديد موعد للعرض عليهم' },
+          { title:'مزاد الملوك', entity:'', desc:'تم إنشاء ملف لمقترح إقامة مزاد للملوك مع الباحث عدنان الطريف' },
+          { title:'معرض الـ 300 عام', entity:'', desc:'فكرة معرض تاريخي يحكي قصّة آثار بالتزامن مع ذكرى مرور 300 عام على تأسيس المملكة' }
+        ],
+        statuses: [
+          { iid:'i1',  status:'active', progress:null, update:'جاري التطوير التقني للعبة' },
+          { iid:'i2',  status:'active', progress:null, update:'تم استلام عروض أسعار ولكن تمّ رفض التوجّه من المسؤولين وجاري تطوير التوجّه' },
+          { iid:'i3',  status:'active', progress:null, update:'تم إرسال العرض للنادي وبانتظار التوقيع' },
+          { iid:'i4',  status:'onhold', progress:null, update:'من المقرّر أن يتم التشغيل بالتعاون مع الوزارة على يكون دور ون استشاري وإدارة مشروع' },
+          { iid:'i5',  status:'onhold', progress:null, update:'تم إرسال بصيغته النهائية العقد للتوقيع' },
+          { iid:'i6',  status:'active', progress:null, update:'بانتظار المستجدات من الهيئة بعد عودة المسؤول من إجازته' },
+          { iid:'i7',  status:'onhold', progress:null, update:'بانتظار التفاهم مع منصة إحسان' },
+          { iid:'i8',  status:'onhold', progress:null, update:'توقف المشروع بسبب ارتباط المشروع بالحائط الثامن' },
+          { iid:'i9',  status:'active', progress:null, update:'تم عقد إجتماع مع القناة لعرض المشروع وفكرته وبانتظار المرئيات للتوافق' },
+          { iid:'i10', status:'active', progress:null, update:'جاهز للعرض على العميل' },
+          { iid:'i11', status:'active', progress:null, update:'جاهز للعرض على الرئيس التنفيذي للتوافق' },
+          { iid:'i12', status:'active', progress:null, update:'جاهز للعرض على الرئيس التنفيذي للتوافق' }
+        ],
+        financial: { received:[], invoiced:[], awaiting:[] },
+        tenders: [],
+        challenges: []
+      }
+    },
+    kpi: null
+  };
+}
+
+// ═══════════ KPI definitions ═══════════
+// Each fn(ctx) → { v, max, money, unit, sub, series:[{l,v}], parts:[{l,v,c}], delta:{t,cls} }
+const KPI_DEFS = {
+  month: [
+    { id:'m_rev', l:'المبالغ المحصّلة', ic:'﷼', vars:['arc','number','ring','bars','spark'], def:'arc', fn:c=>{
+      const t=tgt('revenue'); const v=ach(c.m,'revenue'); const prev = c.m>1?ach(c.m-1,'revenue'):null;
+      return { v, max:t?t.annual/12:null, money:true, unit:'ريال · مقابل مستهدف الشهر', series:mSeries('revenue',c.m), delta:deltaOf(v,prev,MONTHS[c.m-2]) }; } },
+    { id:'m_works', l:'أعمال الشهر', ic:'✦', vars:['number','bars','spark'], def:'number', fn:c=>{
+      const v=c.r.works.length; const pv=c.pr?c.pr.works.length:null;
+      return { v, unit:'بند عمل', series:reportMonths().filter(x=>x<=c.m).map(x=>({l:x,v:S.reports[x].works.length})), delta:deltaOf(v,pv,c.pm?MONTHS[c.pm-1]:'') }; } },
+    { id:'m_inits', l:'حالة المبادرات', ic:'◉', vars:['donut','number','bars'], def:'donut', fn:c=>({ v:c.r.statuses.length, unit:'مبادرة', parts:statusParts(c.r) }) },
+    { id:'m_active', l:'المبادرات النشطة', ic:'▲', vars:['ring','arc','number'], def:'ring', fn:c=>{
+      const n=c.r.statuses.length, v=c.r.statuses.filter(s=>s.status==='active').length; return { v, max:n, unit:`من ${n} مبادرة` }; } },
+    { id:'m_hold', l:'معلّقة / متعثّرة', ic:'⏸', vars:['ring','number','arc'], def:'ring', fn:c=>{
+      const n=c.r.statuses.length, v=c.r.statuses.filter(s=>s.status==='onhold'||s.status==='atrisk').length; return { v, max:n, unit:`من ${n} مبادرة`, warn:true }; } },
+    { id:'m_prog', l:'متوسّط نسبة الإنجاز', ic:'◔', vars:['arc','ring','number'], def:'arc', fn:c=>{
+      const ps=c.r.statuses.map(s=>s.progress).filter(p=>p!=null); const v=ps.length?Math.round(ps.reduce((a,b)=>a+b,0)/ps.length):null;
+      return { v, max:100, unit: ps.length?`من ${ps.length} مبادرة محدّدة`:'لم تُحدَّد نسب الإنجاز بعد', pct:true }; } },
+    { id:'m_newt', l:'تمت الترسية', ic:'★', vars:['number','bars'], def:'number', fn:c=>{
+      const t=(c.r.tenders||[]).filter(x=>x.kind==='awarded'); return { v:t.length, unit:'مشروع تمت ترسيته', sub:t.length?`بقيمة ${fmt(sum(t))} ريال`:'' }; } },
+    { id:'m_newv', l:'قيمة المشاريع المُرسّاة', ic:'﷼', vars:['number'], def:'number', fn:c=>({ v:sum((c.r.tenders||[]).filter(x=>x.kind==='awarded')), money:true, unit:'ريال' }) },
+    { id:'m_actp', l:'المشاريع النشطة', ic:'⚙', vars:['number','bars'], def:'number', fn:c=>{
+      const t=(c.r.tenders||[]).filter(x=>x.kind==='active'); return { v:t.length, unit:'مشروع قيد التنفيذ', sub: t.length?`بقيمة ${fmt(sum(t))} ريال`:'' }; } },
+    { id:'m_closed', l:'مشاريع أُغلقت', ic:'✔', vars:['number'], def:'number', fn:c=>{
+      const t=(c.r.tenders||[]).filter(x=>x.kind==='closed'); return { v:t.length, unit:'مشروع أُغلق هذا الشهر', sub: t.length?`بقيمة ${fmt(sum(t))} ريال`:'' }; } },
+    { id:'m_inv', l:'المبالغ المفوترة', ic:'🧾', vars:['number'], def:'number', fn:c=>({ v:finCalc(c.m,c.r).invoiced, money:true, unit:'ريال' }) },
+    { id:'m_await', l:'بانتظار الفوترة', ic:'⏳', vars:['number'], def:'number', fn:c=>({ v:finCalc(c.m,c.r).awaiting, money:true, unit:'ريال', warn:true }) },
+    { id:'m_ch', l:'التحديات', ic:'⚠', vars:['number','donut'], def:'number', fn:c=>{
+      const l=challengesList(c.m,c.r); return { v:l.length, unit:'تحدٍّ مفتوح', parts:Object.keys(SEVERITY).map(k=>({l:SEVERITY[k].l,v:l.filter(x=>x.severity===k).length,c:SEVERITY[k].c})).filter(p=>p.v), warn:true }; } },
+    { id:'m_chg', l:'التغيير عن الشهر السابق', ic:'⇄', vars:['donut','number'], def:'donut', fn:c=>{
+      if(!c.pr) return { v:null, unit:'لا يوجد شهر سابق للمقارنة' };
+      let nw=0,ch=0,same=0; c.r.statuses.forEach(s=>{ const p=c.pr.statuses.find(x=>x.iid===s.iid); if(!p) nw++; else if(p.status!==s.status||p.progress!==s.progress||p.update!==s.update) ch++; else same++; });
+      return { v:nw+ch, unit:'مبادرة تغيّرت', parts:[{l:'جديدة',v:nw,c:'#4cc3e6'},{l:'تغيّرت',v:ch,c:'#F78E20'},{l:'بدون تغيير',v:same,c:'#6c8a95'}].filter(p=>p.v) }; } }
+  ],
+  year: [
+    { id:'y_rev', l:'الإيرادات منذ بداية السنة', ic:'﷼', vars:['ring','arc','bars','spark','number'], def:'ring', fn:c=>tgtKpi('revenue',c) },
+    { id:'y_offers', l:'العروض', ic:'✉', vars:['ring','arc','bars','number'], def:'ring', fn:c=>tgtKpi('offers',c) },
+    { id:'y_projects', l:'المشاريع', ic:'⚙', vars:['ring','arc','bars','number'], def:'ring', fn:c=>tgtKpi('projects',c) },
+    { id:'y_opps', l:'الفرص', ic:'◎', vars:['ring','arc','bars','number'], def:'ring', fn:c=>tgtKpi('opps',c) },
+    { id:'y_pace', l:'الوتيرة المتوقّعة', ic:'⏱', vars:['arc','ring','number'], def:'arc', fn:c=>({ v:Math.round(c.m/12*100), max:100, pct:true, unit:`المفترض تحقيقه حتى نهاية ${MONTHS[c.m-1]}` }) },
+    { id:'y_works', l:'إجمالي الأعمال المنجزة', ic:'✦', vars:['bars','number','spark'], def:'bars', fn:c=>{
+      const s=reportMonths().map(x=>({l:x,v:S.reports[x].works.length})); return { v:s.reduce((a,b)=>a+b.v,0), unit:'بند عمل خلال السنة', series:s }; } },
+    { id:'y_inits', l:'المبادرات (آخر تقرير)', ic:'◉', vars:['donut','number'], def:'donut', fn:c=>({ v:c.r?c.r.statuses.length:0, unit:'مبادرة', parts:c.r?statusParts(c.r):[] }) },
+    { id:'y_prog', l:'متوسّط الإنجاز (آخر تقرير)', ic:'◔', vars:['arc','ring','number'], def:'arc', fn:c=>{
+      const ps=c.r?c.r.statuses.map(s=>s.progress).filter(p=>p!=null):[]; return { v:ps.length?Math.round(ps.reduce((a,b)=>a+b,0)/ps.length):null, max:100, pct:true, unit:ps.length?'':'لم تُحدَّد نسب الإنجاز بعد' }; } },
+    { id:'y_tend', l:'مشاريع تمت ترسيتها', ic:'★', vars:['number','bars'], def:'number', fn:c=>{
+      const all=allTenders().filter(x=>x.kind==='awarded'); return { v:all.length, unit:'خلال السنة', sub:all.length?`بقيمة ${fmt(sum(all))} ريال`:'', series:reportMonths().map(x=>({l:x,v:(S.reports[x].tenders||[]).filter(t=>t.kind==='awarded').length})) }; } },
+    { id:'y_tendv', l:'قيمة المشاريع المُرسّاة', ic:'﷼', vars:['number'], def:'number', fn:c=>({ v:sum(allTenders().filter(x=>x.kind==='awarded')), money:true, unit:'ريال خلال السنة' }) },
+    { id:'y_actp', l:'المشاريع النشطة (آخر تقرير)', ic:'⚙', vars:['number'], def:'number', fn:c=>({ v:c.r?(c.r.tenders||[]).filter(x=>x.kind==='active').length:0, unit:'مشروع' }) },
+    { id:'y_closed', l:'مشاريع أُغلقت', ic:'✔', vars:['number'], def:'number', fn:c=>({ v:allTenders().filter(x=>x.kind==='closed').length, unit:'خلال السنة' }) }
+  ]
+};
+const KPI_DEFAULT_ON = { month:['m_rev','m_inv','m_await','m_works','m_inits','m_active','m_hold','m_prog','m_newt','m_actp','m_closed','m_ch'], year:['y_rev','y_offers','y_projects','y_opps','y_pace','y_works','y_inits','y_tend','y_actp','y_closed'] };
+
+// ═══════════ State ═══════════
+// Modes: local file = owner editing · published site = view-only (add ?admin to the URL to edit there)
+const HOSTED = /^https?:$/.test(location.protocol);
+const ADMIN  = new URLSearchParams(location.search).has('admin');
+const VIEWER = HOSTED && !ADMIN;
+let S = load();
+let editing = false, statusFilter = null;
+function load(){
+  let d = null;
+  try { d = JSON.parse(localStorage.getItem(STORE_KEY)); } catch(e){}
+  if (!d || !d.reports) d = defaults();
+  return migrate(d);
+}
+function migrate(d){
+  if ((d.version||0) < 3) d.kpi = null;
+  if ((d.version||0) < 4) {
+    const known = new Set(Object.keys(d.logos||{}));
+    (d.initiatives||[]).forEach(i=>i.entity&&known.add(i.entity));
+    Object.values(d.reports||{}).forEach(r=>{ (r.works||[]).forEach(w=>w.entity&&known.add(w.entity)); (r.tenders||[]).forEach(t=>t.client&&known.add(t.client)); });
+    Object.values(d.reports||{}).forEach(r=>{ const f=r.financial||{}; ['received','invoiced','awaiting'].forEach(k=>(Array.isArray(f[k])?f[k]:[]).forEach(x=>{
+      if (x.item==null){ if (x.entity && !known.has(x.entity)) { x.item=x.entity; x.entity=''; } else x.item=''; } })); });
+    const titles = new Set(); (d.initiatives||[]).forEach(i=>titles.add(i.name)); Object.values(d.reports||{}).forEach(r=>{ (r.works||[]).forEach(w=>titles.add(w.title)); (r.tenders||[]).forEach(t=>titles.add(t.name)); });
+    d.entities = (d.entities||[]).filter(n=> (d.logos||{})[n] || !titles.has(n));
+  }
+  d.version = 4; d.logos = d.logos || {}; d.entities = d.entities || [];
+  if (!d.preparedBy || d.preparedBy==='مقبل المقبل') d.preparedBy = 'قطاع حلول الأعمال';
+  Object.values(d.reports).forEach(r=>{
+    (r.tenders||[]).forEach(t=>{ if (t.kind==='previous') t.kind='active'; if (t.kind==='new') t.kind='awarded'; });
+    (r.works||[]).forEach(w=>{ if (w.entity==null) w.entity=''; });
+    r.financial = r.financial || {};
+    ['received','invoiced','awaiting'].forEach(k=>{ const v=r.financial[k];
+      if (!Array.isArray(v)) r.financial[k] = (typeof v==='number') ? [{entity:'غير محدّد', amount:v}] : []; });
+  });
+  if (!d.kpi) d.kpi = {};
+  ['month','year'].forEach(sc=>{
+    const cur = d.kpi[sc] || KPI_DEFAULT_ON[sc].map(id=>({id, variant:null, hidden:false}));
+    KPI_DEFS[sc].forEach(def=>{ if (!cur.find(x=>x.id===def.id)) cur.push({id:def.id, variant:null, hidden:true}); });
+    d.kpi[sc] = cur.filter(x=>KPI_DEFS[sc].find(def=>def.id===x.id));
+  });
+  return d;
+}
+function save(){ if (VIEWER) return; S.savedAt=new Date().toISOString(); try{ localStorage.setItem(STORE_KEY, JSON.stringify(S)); }catch(e){ toast('تعذّر الحفظ — مساحة المتصفح ممتلئة (قلّل حجم الشعارات)'); } }
+
+// ═══════════ Helpers ═══════════
+const $ = s => document.querySelector(s);
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function fmt(n,d=0){ if (n==null||n===''||isNaN(n)) return '—'; return new Intl.NumberFormat('en-US',{maximumFractionDigits:d}).format(n); }
+function compact(n){ if (n==null||isNaN(n)) return '—'; const a=Math.abs(n); if (a>=1e6) return fmt(n/1e6,2)+'M'; if (a>=1e4) return fmt(n/1e3,1)+'K'; return fmt(n); }
+function pct(x,d=0){ return (x==null||!isFinite(x)) ? '—' : fmt(x*100,d)+'%'; }
+function num(v){ if (v===''||v==null) return null; const n=parseFloat(String(v).replace(/,/g,'')); return isNaN(n)?null:n; }
+function sum(list){ return list.reduce((s,x)=>s+(x.value||0),0); }
+function toast(t){ const el=$('#toast'); el.textContent=t; el.classList.add('show'); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove('show'),2200); }
+function reportMonths(){ return Object.keys(S.reports).map(Number).sort((a,b)=>a-b); }
+function lastMonth(){ const m=reportMonths(); return m.length?m[m.length-1]:null; }
+function prevReportMonth(m){ const ms=reportMonths().filter(x=>x<m); return ms.length?ms[ms.length-1]:null; }
+function ini(iid){ return S.initiatives.find(x=>x.id===iid) || {name:'—',entity:''}; }
+function tgt(id){ return S.targets.find(t=>t.id===id); }
+function ach(m,tid){ const a=S.achievements[String(m)]; return a && a[tid]!=null ? a[tid] : 0; }
+function cum(m,tid){ let s=0; for(let k=1;k<=m;k++) s+=ach(k,tid); return s; }
+function mSeries(tid,m){ return MONTHS.slice(0,m).map((_,i)=>({l:i+1,v:ach(i+1,tid)})); }
+function statusBadge(st){ const d=STATUSES[st]||STATUSES.active; return `<span class="badge" style="--c:${d.c}">${d.l}</span>`; }
+function statusParts(r){ const c={}; r.statuses.forEach(s=>c[s.status]=(c[s.status]||0)+1); return Object.keys(STATUSES).filter(k=>c[k]).map(k=>({l:STATUSES[k].l,v:c[k],c:STATUSES[k].c})); }
+function allTenders(){ return reportMonths().flatMap(m=>(S.reports[m].tenders||[]).map(t=>({...t,m}))); }
+function deltaOf(v,prev,name){
+  if (prev==null || v==null) return null;
+  if (prev===0 && v===0) return {t:`= ${name||'السابق'}`, cls:'flat'};
+  if (prev===0) return {t:`▲ جديد مقابل 0 في ${name}`, cls:'up'};
+  const d=(v-prev)/prev; return {t:`${d>0?'▲ +':(d<0?'▼ ':'● ')}${fmt(d*100,1)}% عن ${name}`, cls:d>0?'up':(d<0?'down':'flat')};
+}
+function tgtKpi(tid,c){
+  const t=tgt(tid); if(!t) return {v:null};
+  const v=cum(c.m,tid); const pace=c.m/12, p=t.annual?v/t.annual:0;
+  return { v, max:t.annual, money:!!t.money, unit:`من ${t.money?compact(t.annual):fmt(t.annual)}${t.money?' ريال':''} · المتوقّع ${pct(pace)}`, series:mSeries(tid,c.m),
+    delta:{t:`${p>=pace?'▲ متقدّم':'▼ متأخّر'} ${fmt(Math.abs(p-pace)*100,1)} نقطة`, cls:p>=pace?'up':'down'} };
+}
+function initials(s){ s=String(s||'').replace(/^(ال)/,'').trim(); const w=s.split(/\s+/).filter(Boolean); if(!w.length) return '؟'; return (w[0][0]+(w[1]?w[1].replace(/^ال/,'')[0]:'')); }
+function logoBox(key, cls='', fb=''){
+  const src = key && S.logos[key];
+  return `<div class="lg ${src?'':'none'} ${cls}" ${key?`data-lk="${esc(key)}" onclick="logoClick(event,this)"`:''} title="${esc(key||'')}">${src?`<img src="${src}" alt="">`:`<span>${esc(initials(key||fb))}</span>`}</div>`;
+}
+
+// ═══════════ Routing / render ═══════════
+function currentView(){
+  const h = location.hash.replace('#','');
+  if (h==='year') return 'year';
+  const m = parseInt(h.replace('m-','')); if (m && S.reports[m]) return m;
+  return lastMonth() || 'year';
+}
+window.addEventListener('hashchange', render);
+function render(){
+  $('#logoSlot').innerHTML = LOGO;
+  const v = currentView();
+  $('#hdrSub').textContent = `ون · ${S.preparedBy} · مُعدّ لـ${S.audience} · ${v==='year'?'ملخّص سنة '+S.year:'تقرير '+MONTHS[v-1]+' '+S.year}`;
+  $('#footL').textContent = `${S.preparedBy} · ${new Date().toLocaleDateString('ar-u-nu-latn',{year:'numeric',month:'long',day:'numeric'})}`;
+  const ms = reportMonths();
+  $('#tabs').innerHTML = ms.map(m=>`<button class="tab ${v===m?'active':''}" onclick="location.hash='m-${m}'">${editing?`<span class="tab-x" onclick="event.stopPropagation();deleteMonth(${m})" title="حذف تقرير ${MONTHS[m-1]}">✕</span>`:''}${S.reports[m].review?'<span class="tab-rv" title="بانتظار المراجعة">!</span>':''}تقرير ${MONTHS[m-1]}<small class="num">${S.year}</small></button>`).join('')
+    + (!VIEWER && ms.length && lastMonth()<12 ? `<button class="tab add no-print" onclick="newMonth()" title="إضافة تقرير ${MONTHS[lastMonth()]}"><span style="font-size:20px;line-height:1">＋</span><small>${MONTHS[lastMonth()]}</small></button>` : '')
+    + `<button class="tab year ${v==='year'?'active':''}" onclick="location.hash='year'">◈ ملخّص السنة<small>كل الإنجازات</small></button>`;
+  const secs = v==='year' ? yearSections() : monthSections(v);
+  $('#view').innerHTML = secs.join('') + (editing && v!=='year' ? `<div class="sec no-print" style="text-align:center"><button class="btn danger" onclick="deleteMonth(${v})">🗑 حذف تقرير ${MONTHS[v-1]}</button></div>`:'');
+  document.body.classList.toggle('editing', editing);
+  countUp($('#view')); refreshEntList();
+}
+function secHead(idx, title, count, editFn, extra=''){
+  return `<div class="sec-h"><span class="idx num">${idx}</span><h2>${title}</h2>${count!=null?`<span class="cnt num">${count}</span>`:''}<span class="line"></span>${extra}
+    ${editFn?`<button class="btn sm edit-only" onclick="${editFn}">✎ تعديل</button>`:''}</div>`;
+}
+
+// ═══════════ KPI engine ═══════════
+function kpiPanel(scope, ctx, title, idx='00'){
+  const cfg = S.kpi[scope];
+  const shown = cfg.filter(x=>!x.hidden);
+  const hidden = cfg.filter(x=>x.hidden);
+  const tiles = shown.map((c,i)=>{
+    const def = KPI_DEFS[scope].find(d=>d.id===c.id);
+    const data = def.fn(ctx);
+    const variant = def.vars.includes(c.variant) ? c.variant : def.def;
+    return kpiTile(scope, def, data, variant, i, shown.length);
+  }).join('');
+  const addSel = hidden.length ? `<select class="edit-only" onchange="kpiShow('${scope}',this.value)"><option value="">＋ إضافة مؤشر…</option>${hidden.map(h=>`<option value="${h.id}">${KPI_DEFS[scope].find(d=>d.id===h.id).l}</option>`).join('')}</select>` : '';
+  const monthBtn = scope==='month' ? `<button class="btn sm edit-only" onclick="editAchievements(${ctx.m})">✎ أرقام الشهر</button>` : `<button class="btn sm edit-only" onclick="openSettings()">✎ المستهدفات</button>`;
+  return `<section class="sec"><div class="dash glass brk">
+    <div class="dash-h"><span class="idx num" style="font-size:12px;color:var(--a1);border:1px solid var(--line);border-radius:8px;padding:2px 8px">${idx}</span><h2>${title}</h2>${scope==='month'?reviewChip(ctx.m,'numbers'):''}<span class="sp"></span>${addSel}${monthBtn}</div>
+    <div class="kgrid">${tiles || '<div class="empty">لا توجد مؤشرات ظاهرة — فعّل وضع التحرير لإضافتها</div>'}</div>
+  </div></section>`;
+}
+function kpiTile(scope, def, d, variant, i, n){
+  let body;
+  const hasMax = d.max!=null && d.max>0 && d.v!=null;
+  const hasSeries = d.series && d.series.length>1;
+  const hasParts = d.parts && d.parts.length;
+  let vv = variant;
+  if ((vv==='ring'||vv==='arc') && !hasMax) vv='number';
+  if ((vv==='bars'||vv==='spark') && !hasSeries) vv='number';
+  if (vv==='donut' && !hasParts) vv='number';
+  const valTxt = d.v==null ? '—' : (d.money ? compact(d.v) : fmt(d.v)) + (d.pct?'%':'');
+  const color = d.warn ? 'var(--a1)' : 'url(#gOne)';
+  if (vv==='number') body = `<div style="text-align:center"><div class="kv num" ${d.v!=null?`data-count="${d.v}" data-money="${d.money?1:0}" data-pct="${d.pct?1:0}"`:''}>${valTxt}</div><div class="ku">${esc(d.unit||'')}</div>${d.sub?`<div class="ku" style="color:var(--a1)">${esc(d.sub)}</div>`:''}</div>`;
+  else if (vv==='ring') body = `<div style="display:flex;align-items:center;gap:12px">${svgRing(d.v/d.max, color, 104, valTxt)}<div class="ku" style="text-align:start;max-width:110px">${esc(d.unit||'')}</div></div>`;
+  else if (vv==='arc') body = `<div style="text-align:center">${svgArc(d.v/d.max, color, valTxt)}<div class="ku">${esc(d.unit||'')}</div></div>`;
+  else if (vv==='bars') body = `<div style="width:100%">${svgBars(d.series)}<div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:6px"><span class="kv num" style="font-size:24px">${valTxt}</span><span class="ku">${esc(d.unit||'')}</span></div></div>`;
+  else if (vv==='spark') body = `<div style="width:100%">${svgSpark(d.series)}<div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:6px"><span class="kv num" style="font-size:24px">${valTxt}</span><span class="ku">${esc(d.unit||'')}</span></div></div>`;
+  else if (vv==='donut') body = `<div style="display:flex;align-items:center;gap:12px;width:100%">${svgDonut(d.parts, valTxt)}<div class="mini-leg">${d.parts.slice(0,5).map(p=>`<span><i style="background:${p.c}"></i>${esc(p.l)} <b>${p.v}</b></span>`).join('')}</div></div>`;
+  const cyc = def.vars.length>1 ? `<button onclick="kpiCycle('${scope}','${def.id}')" title="تغيير النمط">◇ ${VARIANTS[vv]||vv}</button>` : '';
+  return `<div class="kt">
+    <div class="kh"><span class="kl">${esc(def.l)}</span><span class="kic">${def.ic}</span></div>
+    <div class="kb">${body}</div>
+    <div class="kf"><span>${d.delta?`<span class="kd ${d.delta.cls}">${esc(d.delta.t)}</span>`:''}</span>
+      <span class="ktools">${cyc}${i>0?`<button onclick="kpiMove('${scope}','${def.id}',-1)" title="تقديم">→</button>`:''}${i<n-1?`<button onclick="kpiMove('${scope}','${def.id}',1)" title="تأخير">←</button>`:''}<button onclick="kpiHide('${scope}','${def.id}')" title="إخفاء">✕</button></span></div>
+  </div>`;
+}
+function svgRing(p, color, size, label){
+  p = Math.max(0, Math.min(1, p||0)); const r=size/2-10, c=2*Math.PI*r;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="flex-shrink:0;filter:drop-shadow(0 0 6px rgba(var(--glowc),.45))">
+    <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="var(--line2)" stroke-width="10"/>
+    <circle cx="${size/2}" cy="${size/2}" r="${r+7}" fill="none" stroke="var(--line2)" stroke-width="1" stroke-dasharray="2 5"/>
+    <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${color}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c}" transform="rotate(-90 ${size/2} ${size/2})"><animate attributeName="stroke-dashoffset" from="${c}" to="${c*(1-p)}" dur="1s" fill="freeze" calcMode="spline" keySplines=".2 .8 .2 1" keyTimes="0;1"/></circle>
+    <text x="50%" y="${label?'46%':'50%'}" dominant-baseline="central" text-anchor="middle" class="ring-t" font-size="${size>100?18:15}">${pct(p)}</text>
+    ${label?`<text x="50%" y="66%" dominant-baseline="central" text-anchor="middle" class="ring-s">${esc(label)}</text>`:''}</svg>`;
+}
+function svgArc(p, color, label){
+  p = Math.max(0, Math.min(1, p||0)); const W=170,H=100,cx=85,cy=88,r=68, len=Math.PI*r;
+  const ang = Math.PI*(1-p), nx=cx+Math.cos(ang)*(r), ny=cy-Math.sin(ang)*(r);
+  const ticks = Array.from({length:11},(_,k)=>{const a=Math.PI*(1-k/10);return `<line x1="${cx+Math.cos(a)*(r-16)}" y1="${cy-Math.sin(a)*(r-16)}" x2="${cx+Math.cos(a)*(r-11)}" y2="${cy-Math.sin(a)*(r-11)}" stroke="var(--soft)" stroke-width="${k%5?1:2}"/>`;}).join('');
+  return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="filter:drop-shadow(0 0 6px rgba(var(--glowc),.45))">
+    <path d="M ${cx-r} ${cy} A ${r} ${r} 0 0 1 ${cx+r} ${cy}" fill="none" stroke="var(--line2)" stroke-width="11" stroke-linecap="round"/>
+    <path d="M ${cx-r} ${cy} A ${r} ${r} 0 0 1 ${cx+r} ${cy}" fill="none" stroke="${color}" stroke-width="11" stroke-linecap="round" stroke-dasharray="${len}" stroke-dashoffset="${len}"><animate attributeName="stroke-dashoffset" from="${len}" to="${len*(1-p)}" dur="1s" fill="freeze"/></path>
+    ${ticks}<circle cx="${nx}" cy="${ny}" r="5" fill="var(--ink)"/>
+    <text x="${cx}" y="${cy-18}" text-anchor="middle" class="ring-t" font-size="20">${pct(p)}</text>
+    <text x="${cx}" y="${cy-2}" text-anchor="middle" class="ring-s" font-size="10">${esc(label)}</text></svg>`;
+}
+function svgBars(series){
+  const W=200,H=78, n=series.length, max=Math.max(...series.map(s=>s.v),1), bw=Math.max(4,(W-(n-1)*4)/n);
+  return `<svg width="100%" height="${H}" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${series.map((s,i)=>{const h=Math.max(s.v?3:1,(s.v/max)*(H-14));const x=i*(bw+4);
+    return `<rect x="${x}" y="${H-12-h}" width="${bw}" height="${h}" rx="2" fill="${i===n-1?'url(#gOne)':'var(--line)'}"><title>${s.l}: ${fmt(s.v)}</title></rect><text x="${x+bw/2}" y="${H-2}" text-anchor="middle" font-size="8" fill="var(--soft)">${s.l}</text>`;}).join('')}</svg>`;
+}
+function svgSpark(series){
+  const W=200,H=70, n=series.length, max=Math.max(...series.map(s=>s.v),1), min=0;
+  const pts = series.map((s,i)=>[i*(W/(n-1)), H-6-((s.v-min)/(max-min||1))*(H-14)]);
+  const d = pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');
+  const last = pts[pts.length-1];
+  return `<svg width="100%" height="${H}" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><path d="${d} L ${W},${H} L 0,${H} Z" fill="url(#gFill)"/><path d="${d}" fill="none" stroke="var(--a1)" stroke-width="2" style="filter:drop-shadow(0 0 4px var(--a1))"/><circle cx="${last[0]}" cy="${last[1]}" r="3.5" fill="var(--a1)"/></svg>`;
+}
+function svgDonut(parts, label){
+  const size=100, r=38, c=2*Math.PI*r, tot=parts.reduce((a,b)=>a+b.v,0)||1; let off=0;
+  const segs = parts.map(p=>{const len=p.v/tot*c; const s=`<circle cx="50" cy="50" r="${r}" fill="none" stroke="${p.c}" stroke-width="13" stroke-dasharray="${Math.max(len-2,0)} ${c}" stroke-dashoffset="${-off}" transform="rotate(-90 50 50)"><title>${p.l}: ${p.v}</title></circle>`; off+=len; return s;}).join('');
+  return `<svg width="${size}" height="${size}" viewBox="0 0 100 100" style="flex-shrink:0;filter:drop-shadow(0 0 6px rgba(var(--glowc),.35))"><circle cx="50" cy="50" r="${r}" fill="none" stroke="var(--line2)" stroke-width="13"/>${segs}<text x="50" y="50" dominant-baseline="central" text-anchor="middle" class="ring-t" font-size="20">${esc(label)}</text></svg>`;
+}
+function countUp(root){
+  root.querySelectorAll('[data-count]').forEach(el=>{
+    const to=parseFloat(el.dataset.count), money=el.dataset.money==='1', p=el.dataset.pct==='1'; if(!isFinite(to)) return;
+    const t0=performance.now(), dur=900;
+    const step=now=>{ const k=Math.min(1,(now-t0)/dur), e=1-Math.pow(1-k,3), v=to*e;
+      el.textContent=(money?compact(v):fmt(k<1?Math.round(v):to))+(p?'%':''); if(k<1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  });
+}
+function kpiCycle(sc,id){ const c=S.kpi[sc].find(x=>x.id===id), def=KPI_DEFS[sc].find(d=>d.id===id); const cur=def.vars.includes(c.variant)?c.variant:def.def; c.variant=def.vars[(def.vars.indexOf(cur)+1)%def.vars.length]; save(); render(); }
+function kpiHide(sc,id){ S.kpi[sc].find(x=>x.id===id).hidden=true; save(); render(); }
+function kpiShow(sc,id){ if(!id) return; const c=S.kpi[sc].find(x=>x.id===id); c.hidden=false; const arr=S.kpi[sc]; arr.splice(arr.indexOf(c),1); const lastShown=arr.map(x=>!x.hidden).lastIndexOf(true); arr.splice(lastShown+1,0,c); save(); render(); }
+function kpiMove(sc,id,d){ const arr=S.kpi[sc]; const shown=arr.filter(x=>!x.hidden); const i=shown.findIndex(x=>x.id===id), j=i+d; if(j<0||j>=shown.length) return;
+  const a=arr.indexOf(shown[i]), b=arr.indexOf(shown[j]); [arr[a],arr[b]]=[arr[b],arr[a]]; save(); render(); }
+
+// ═══════════ Month sections ═══════════
+function monthSections(m){
+  const r = S.reports[m], pm = prevReportMonth(m);
+  const ctx = { m, r, pm, pr: pm?S.reports[pm]:null };
+  return [
+    reviewBanner(m),
+    secWorks(m,r,'01'),
+    secStatus(m,r,'02'),
+    secFinancial(m,r,'03'),
+    secTenders(m,r,'04'),
+    secChallenges(m,r,'05'),
+    kpiPanel('month', ctx, `لوحة مؤشرات ${MONTHS[m-1]}`, '06')
+  ];
+}
+function workCard(w){
+  return `<div class="card hov"><div class="eh">${logoBox(w.entity,'',w.title)}<div class="t"><h3>${esc(w.title)}</h3></div></div><p>${esc(w.desc)}</p></div>`;
+}
+const WORK_PHASES = { started:{l:'أعمال بدأت هذا الشهر', c:'#3fdc97'}, ongoing:{l:'مستمر العمل فيها', c:'#4cc3e6'} };
+// Phase: explicit choice, otherwise «مستمر» if the same title appeared in the previous report, else «بدأت»
+function workPhase(m,w){ if (w.phase) return w.phase; const pm=prevReportMonth(m); return (pm && S.reports[pm].works.some(x=>x.title.trim()===w.title.trim())) ? 'ongoing' : 'started'; }
+function worksGrouped(m,works){
+  return ['started','ongoing'].map(k=>{ const g=works.filter(w=>workPhase(m,w)===k); if(!g.length) return '';
+    return `<div class="grp-h" style="--c:${WORK_PHASES[k].c}"><i></i><b>${WORK_PHASES[k].l}</b><span class="num">${g.length}</span><span class="ln"></span></div><div class="grid g3">${g.map(workCard).join('')}</div>`; }).join('');
+}
+function secWorks(m,r,idx){
+  const body = r.works.length ? worksGrouped(m, r.works) : `<div class="empty">لا توجد أعمال مسجّلة لهذا الشهر</div>`;
+  return `<section class="sec">${secHead(idx,`أعمال ${MONTHS[m-1]}`, r.works.length, `editWorks(${m})`, reviewChip(m,'works'))}${body}</section>`;
+}
+function changeTag(m,s){
+  const pm = prevReportMonth(m); if (!pm) return '';
+  const p = S.reports[pm].statuses.find(x=>x.iid===s.iid);
+  if (!p) return `<span class="chg new">جديد هذا الشهر</span>`;
+  if (p.status!==s.status) return `<span class="chg upd">كانت «${STATUSES[p.status]?.l||''}»</span>`;
+  if (s.progress!=null && p.progress!=null && s.progress!==p.progress){ const d=s.progress-p.progress; return `<span class="chg ${d>0?'up':'upd'}">${d>0?'▲ +':'▼ '}${d} نقطة</span>`; }
+  if (p.update!==s.update) return `<span class="chg upd">مستجد جديد</span>`;
+  return `<span class="chg">بدون تغيير</span>`;
+}
+function statusCard(m,s){
+  const i = ini(s.iid), key = i.entity || i.name, has = s.progress!=null;
+  return `<div class="card hov st" onclick="showHistory('${s.iid}')" title="اضغط لعرض سجلّ المبادرة">
+    <div class="eh">${logoBox(i.entity,'',i.name)}<div class="t"><h3>${esc(i.name)}</h3></div>${statusBadge(s.status)}</div>
+    <div class="up">${s.update?esc(s.update):'<span class="empty">لا يوجد مستجد</span>'}</div>
+    <div class="prog ${has?'':'none'}"><div class="bar"><i style="width:${has?Math.min(100,s.progress):0}%"></i></div><b class="${has?'num':''}">${has?s.progress+'%':'لم تُحدَّد'}</b></div>
+    <div>${changeTag(m,s)}</div></div>`;
+}
+function secStatus(m,r,idx,forTV){
+  const cnt={}; r.statuses.forEach(s=>cnt[s.status]=(cnt[s.status]||0)+1);
+  const chips = forTV ? '' : `<div class="chips no-print"><span class="chip ${!statusFilter?'active':''}" onclick="setFilter(null)">الكل · ${r.statuses.length}</span>
+    ${Object.keys(STATUSES).filter(k=>cnt[k]).map(k=>`<span class="chip ${statusFilter===k?'active':''}" style="color:${statusFilter===k?STATUSES[k].c:''}" onclick="setFilter('${k}')"><i style="background:${STATUSES[k].c};color:${STATUSES[k].c}"></i>${STATUSES[k].l} · ${cnt[k]}</span>`).join('')}</div>`;
+  const list = r.statuses.filter(s=>forTV || !statusFilter || s.status===statusFilter);
+  const groups = STATUS_ORDER.map(k=>({k, items:list.filter(s=>s.status===k)})).filter(g=>g.items.length);
+  const grouped = groups.map(g=>`<div class="grp-h" style="--c:${STATUSES[g.k].c}"><i></i><b>${STATUSES[g.k].l}</b><span class="num">${g.items.length}</span><span class="ln"></span></div>
+    <div class="grid g3">${g.items.map(s=>statusCard(m,s)).join('')}</div>`).join('');
+  const body = r.statuses.length ? chips + (grouped||'<div class="empty">لا توجد مبادرات بهذه الحالة</div>') : `<div class="empty">لا توجد مبادرات</div>`;
+  return `<section class="sec" id="s-status">${secHead(idx,'حالة المبادرات والمشاريع', r.statuses.length, `editStatuses(${m})`, reviewChip(m,'statuses'))}${body}</section>`;
+}
+function setFilter(k){ statusFilter=k; render(); setTimeout(()=>document.getElementById('s-status')?.scrollIntoView({block:'start',behavior:'smooth'}),0); }
+
+const PROJ = { awarded:{l:'تمت الترسية',c:'#3fdc97'}, active:{l:'نشط',c:'#4cc3e6'}, closed:{l:'أُغلق',c:'#8aa0aa'} };
+function projBadge(k){ const p=PROJ[k]||PROJ.active; return `<span class="badge" style="--c:${p.c}">${p.l}</span>`; }
+const FIN_LISTS = {
+  received:{ l:'المبالغ المحصّلة', note:'دخلت فعلياً هذا الشهر' },
+  invoiced:{ l:'المبالغ المفوترة', note:'صدرت بها فواتير' },
+  awaiting:{ l:'بانتظار الفوترة', note:'مستحقّة لم تُفوتر بعد' }
+};
+function finList(r,k){ const f=(r&&r.financial)||{}; return Array.isArray(f[k])?f[k]:[]; }
+function listSum(l){ return l.reduce((s,x)=>s+(x.amount||0),0); }
+function finCalc(m,r){
+  const inv=finList(r,'invoiced'), aw=finList(r,'awaiting');
+  return { received:ach(m,'revenue'), invoiced:inv.length?listSum(inv):null, awaiting:aw.length?listSum(aw):null };
+}
+function finMiniList(list, max=5){
+  if (!list.length) return '';
+  const rows=list.slice().sort((a,b)=>(b.amount||0)-(a.amount||0));
+  const shown=rows.slice(0,max), more=rows.length-shown.length, tot=listSum(rows)||1;
+  return `<div class="fl">${shown.map(x=>`<div class="fl-r">${logoBox(x.entity,'sm',x.item)}<span class="fl-n">${esc(x.item||x.entity||'—')}</span><span class="fl-b"><i style="width:${Math.max(4,(x.amount||0)/tot*100)}%"></i></span><b class="num">${fmt(x.amount)}</b></div>`).join('')}
+    ${more>0?`<div class="fl-more">+ ${more} جهات أخرى — اضغط للعرض الكامل</div>`:''}</div>`;
+}
+function secFinancial(m,r,idx){
+  const x=finCalc(m,r), mt=tgt('revenue'), monthly=mt?mt.annual/12:null;
+  const rec=finList(r,'received'), recSum=listSum(rec), mismatch = rec.length && Math.round(recSum)!==Math.round(x.received);
+  const card=(k,v,extra,cls,note)=>{ const list=finList(r,k);
+    return `<div class="card fin hov ${cls||''}" style="cursor:pointer" onclick="showFinList(${m},'${k}')" title="اضغط لعرض القائمة الكاملة">
+      <div style="display:flex;align-items:center;gap:14px">${extra||''}<div style="flex:1;min-width:0"><div class="l">${FIN_LISTS[k].l}${k==='received'?` في ${MONTHS[m-1]}`:''}</div>
+        <div class="v num" style="font-size:28px" ${v!=null?`data-count="${v}"`:''}>${v!=null?fmt(v):'—'}</div><div class="note">${v!=null?'ريال · ':''}${note}</div></div></div>
+      ${finMiniList(list)}
+      ${!list.length?`<div class="fl-empty">${v!=null&&k==='received'?'لم يُدخل تفصيل الجهات بعد':'لا توجد مبالغ مسجّلة'}</div>`:''}
+    </div>`; };
+  return `<section class="sec">${secHead(idx,'الوضع المالي للشهر', null, `editFinancial(${m})`, reviewChip(m,'financial'))}
+    <div class="grid g3" style="align-items:start">
+      ${card('received', x.received, monthly?svgRing(x.received/monthly,'url(#gOne)',88,'من المستهدف'):'', 'hero brk', `مستهدف الشهر ${fmt(monthly)} ريال${mismatch?` · <span style="color:var(--bad)">مجموع القائمة ${fmt(recSum)} لا يطابق الإجمالي</span>`:''}`)}
+      ${card('invoiced', x.invoiced, '', '', x.invoiced==null?'لم تُدخل بعد':FIN_LISTS.invoiced.note)}
+      ${card('awaiting', x.awaiting, '', '', x.awaiting==null?'لم تُدخل بعد':FIN_LISTS.awaiting.note)}
+    </div></section>`;
+}
+function showFinList(m,k){
+  const r=S.reports[m], list=finList(r,k).slice().sort((a,b)=>(b.amount||0)-(a.amount||0));
+  const total = k==='received' ? ach(m,'revenue') : listSum(list);
+  modal(`${FIN_LISTS[k].l} — ${MONTHS[m-1]}`, list.length ? `<table class="tbl"><thead><tr><th></th><th>البند</th><th>المبلغ (ريال)</th><th>النسبة</th></tr></thead><tbody>
+    ${list.map(x=>`<tr><td style="width:52px">${logoBox(x.entity,'',x.item)}</td><td><b>${esc(x.item||x.entity)}</b>${x.note?`<div class="ent">${esc(x.note)}</div>`:''}</td><td class="num">${fmt(x.amount)}</td><td class="num">${pct((x.amount||0)/(listSum(list)||1),1)}</td></tr>`).join('')}
+    <tr><td></td><td><b>الإجمالي</b></td><td class="num"><b>${fmt(listSum(list))}</b></td><td></td></tr></tbody></table>`
+    : `<div class="empty">لا توجد قائمة جهات لهذا البند${total?` (الإجمالي المسجّل ${fmt(total)} ريال)`:''}. أضفها من «✎ تعديل» في قسم الوضع المالي.</div>`, null);
+}
+function tenderTable(list, withMonth){
+  return `<table class="tbl" style="margin-top:14px"><thead><tr><th></th><th>المشروع</th>${withMonth?'<th>الشهر</th>':''}<th>الحالة</th><th>القيمة (ريال)</th></tr></thead><tbody>
+    ${list.map(t=>`<tr><td style="width:52px">${logoBox(t.client,'',t.name)}</td><td><b>${esc(t.name)}</b></td>${withMonth?`<td>${MONTHS[t.m-1]}</td>`:''}<td>${projBadge(t.kind)}</td><td class="num">${t.value!=null?fmt(t.value):'—'}</td></tr>`).join('')}</tbody></table>`;
+}
+function projCards(aw,ac,cl,labels){
+  const c=(k,list,l)=>`<div class="card fin hov" style="text-align:center;border-top:3px solid ${PROJ[k].c}"><div class="l">${l}</div><div class="v num" data-count="${list.length}">${list.length}</div><div class="note">${list.length?`بقيمة <span class="num">${fmt(sum(list))}</span> ريال`:'—'}</div></div>`;
+  return `<div class="grid g3">${c('awarded',aw,labels[0])}${c('active',ac,labels[1])}${c('closed',cl,labels[2])}</div>`;
+}
+function secTenders(m,r,idx){
+  const t=r.tenders||[], aw=t.filter(x=>x.kind==='awarded'), ac=t.filter(x=>x.kind==='active'), cl=t.filter(x=>x.kind==='closed');
+  return `<section class="sec">${secHead(idx,'المشاريع', t.length||null, `editTenders(${m})`, reviewChip(m,'tenders'))}
+    ${projCards(aw,ac,cl,['تمت الترسية هذا الشهر','المشاريع النشطة','أُغلقت هذا الشهر'])}
+    ${t.length?tenderTable([...aw,...ac,...cl]):`<div class="empty" style="margin-top:12px">لا توجد مشاريع مسجّلة لهذا الشهر</div>`}</section>`;
+}
+function challengesList(m,r){
+  const manual=(r.challenges||[]).map(c=>({...c,auto:false}));
+  if (!S.autoChallenges) return manual;
+  const covered=new Set(manual.map(c=>c.iid).filter(Boolean));
+  return manual.concat(r.statuses.filter(s=>(s.status==='onhold'||s.status==='atrisk')&&!covered.has(s.iid)).map(s=>({title:ini(s.iid).name, cause:s.update, treatment:'', iid:s.iid, severity:s.status==='atrisk'?'high':'medium', auto:true})));
+}
+function secChallenges(m,r,idx){
+  const l=challengesList(m,r);
+  const body = l.length ? `<div class="grid g2">${l.map(c=>{const sv=SEVERITY[c.severity]||SEVERITY.medium; const i=c.iid?ini(c.iid):null;
+    return `<div class="card hov"><div class="eh">${logoBox(i?i.entity:'','',i?i.name:c.title)}<div class="t"><h3>${esc(c.title)}</h3></div><span class="badge" style="--c:${sv.c}">${sv.l}</span></div>
+      <div class="ch2"><div><span class="lbl">التحدّي</span><p>${esc(c.cause||c.title)}</p></div><div><span class="lbl">المعالجة</span><p>${c.treatment?esc(c.treatment):'<span class="empty">لم تُحدَّد بعد</span>'}</p></div></div>
+      ${c.auto?'<div style="margin-top:8px"><span class="auto-tag">مُستمَد تلقائياً من حالة المبادرة</span></div>':''}</div>`;}).join('')}</div>` : `<div class="empty">لا توجد تحديات مسجّلة</div>`;
+  return `<section class="sec">${secHead(idx,'التحديات والمعالجات', l.length||null, `editChallenges(${m})`, reviewChip(m,'challenges'))}${body}</section>`;
+}
+
+// ═══════════ Year sections ═══════════
+function yearSections(){
+  const lm = lastMonth() || 1;
+  const ctx = { m: lm, r: S.reports[lm] || null };
+  return [
+    kpiPanel('year', ctx, `لوحة إنجازات ${S.year} حتى ${MONTHS[lm-1]}`, '00'),
+    yearTargets(lm,'01'), yearWorks('02'), yearStatus('03'), yearFinance('04'), yearTenders('05')
+  ];
+}
+function perfColor(p,pace){ return p>=pace?'var(--ok)':(p>=pace*.75?'var(--a1)':'var(--bad)'); }
+function yearTargets(lm,idx){
+  const pace=lm/12;
+  const cards=S.targets.map(t=>{
+    const monthly=t.annual/12, c=cum(lm,t.id), p=t.annual?c/t.annual:0, col=perfColor(p,pace);
+    const vals=MONTHS.map((_,i)=>ach(i+1,t.id)), max=Math.max(monthly,...vals)*1.12||1;
+    const la=ach(lm,t.id), pM=monthly?la/monthly:0, prev=lm>1?ach(lm-1,t.id):null, d=deltaOf(la,prev,MONTHS[lm-2]);
+    const f=t.money?compact:(v=>fmt(v,1));
+    return `<div class="card tg brk">
+      <div class="tg-h"><div><h3>${esc(t.name)}</h3><div class="type">${esc(t.type)}${t.money?' · ريال':''}</div></div>${svgRing(p,col,96,'من السنوي')}</div>
+      <div class="kv4">
+        <div><span class="l">المستهدف السنوي</span><span class="v num">${fmt(t.annual)}</span></div>
+        <div><span class="l">مستهدف الشهر</span><span class="v num">${f(monthly)}</span></div>
+        <div><span class="l">إجمالي التحقّق حتى ${MONTHS[lm-1]}</span><span class="v num">${fmt(c)}</span></div>
+        <div class="${pM>=1?'good':'bad'}"><span class="l">تحقّق ${MONTHS[lm-1]}</span><span class="v num">${fmt(la)}</span><span class="n">${pct(pM)} من مستهدف الشهر</span></div>
+      </div>
+      <div class="plot">${vals.map((v,i)=>`<div class="col" title="${MONTHS[i]}: ${fmt(v)}"><i style="height:${v?Math.max(v/max*100,2):0}%;background:${i+1>lm?'var(--line2)':(v>=monthly?'var(--ok)':'var(--a2)')};box-shadow:${i+1<=lm&&v?'0 0 10px '+(v>=monthly?'var(--ok)':'var(--a2)'):'none'}"></i></div>`).join('')}<div class="tline" style="bottom:${monthly/max*100}%"></div></div>
+      <div class="plot-l">${MONTHS.map((_,i)=>`<span class="num ${i+1===lm?'cur':''}">${i+1}</span>`).join('')}</div>
+      <div class="pace">
+        <div class="pace-bar" style="color:${col}"><i style="width:${Math.min(100,p*100)}%;background:${col}"></i><em style="inset-inline-start:${pace*100}%"></em></div>
+        المتوقّع حتى ${MONTHS[lm-1]}: <b class="num">${pct(pace)}</b> · المتحقّق: <b class="num" style="color:${col}">${pct(p)}</b> (${p>=pace?'متقدّم':'متأخّر'} <span class="num">${fmt(Math.abs(p-pace)*100,1)}</span> نقطة)
+        · المطلوب شهرياً للإغلاق: <b class="num">${lm<12?f(Math.max(0,t.annual-c)/(12-lm)):'—'}</b>
+        ${d?`<div class="mom ${d.cls}" style="margin-top:4px">${esc(d.t)}</div>`:''}
+      </div></div>`;
+  }).join('');
+  return `<section class="sec">${secHead(idx,'المستهدفات السنويّة', null, 'openSettings()')}<div class="grid g2">${cards}</div>
+    <p class="hint" style="margin-top:10px">الأعمدة الخضراء: شهر حقّق مستهدفه · البرتقاليّة: دون المستهدف · الخطّ المتقطّع: مستهدف الشهر · العلامة على شريط التقدّم: الوتيرة المتوقّعة.</p></section>`;
+}
+function yearWorks(idx){
+  const ms=reportMonths(); const total=ms.reduce((a,m)=>a+S.reports[m].works.length,0);
+  const body = ms.slice().reverse().map(m=>{ const w=S.reports[m].works; if(!w.length) return '';
+    return `<div class="mhead">${MONTHS[m-1]} <span class="cnt num" style="font-size:11px;color:var(--muted);border:1px solid var(--line2);border-radius:20px;padding:0 8px">${w.length}</span></div>${worksGrouped(m,w)}`; }).join('');
+  return `<section class="sec">${secHead(idx,'سجلّ إنجازات السنة', total)}${body||'<div class="empty">لا توجد أعمال</div>'}</section>`;
+}
+function yearStatus(idx){
+  const ms=reportMonths(); const lm=lastMonth();
+  const stackRows = ms.map(m=>{ const r=S.reports[m], n=r.statuses.length||1, parts=statusParts(r);
+    return `<div class="row-m"><b>${MONTHS[m-1]}</b><div class="stack">${parts.map(p=>`<i title="${p.l}: ${p.v}" style="width:${p.v/n*100}%;background:${p.c};box-shadow:0 0 8px ${p.c}"></i>`).join('')}</div><span class="num" style="font-size:12px;color:var(--muted);min-width:34px">${r.statuses.length}</span></div>`; }).join('');
+  const ids = lm ? S.reports[lm].statuses.map(s=>s.iid) : [];
+  const matrix = `<div style="overflow:auto;margin-top:14px"><table class="tbl mx"><thead><tr><th>المبادرة</th>${ms.map(m=>`<th>${MONTHS[m-1]}</th>`).join('')}</tr></thead><tbody>
+    ${ids.map(id=>{ const i=ini(id); return `<tr style="cursor:pointer" onclick="showHistory('${id}')"><td><div class="eh" style="gap:8px">${logoBox(i.entity,'',i.name)}<b>${esc(i.name)}</b></div></td>${ms.map(m=>{ const s=S.reports[m].statuses.find(x=>x.iid===id); return `<td>${s?statusBadge(s.status)+(s.progress!=null?`<div class="num" style="font-size:11px;color:var(--muted);margin-top:3px">${s.progress}%</div>`:''):'—'}</td>`; }).join('')}</tr>`; }).join('')}
+  </tbody></table></div>`;
+  return `<section class="sec">${secHead(idx,'مسار المبادرات عبر الأشهر', ids.length)}<div class="card">${stackRows}<div class="legend">${Object.keys(STATUSES).map(k=>`<span><i style="background:${STATUSES[k].c}"></i>${STATUSES[k].l}</span>`).join('')}</div></div>${matrix}</section>`;
+}
+function yearFinance(idx){
+  const ms=reportMonths(); const lm=lastMonth()||1;
+  let tr=0,ti=0,ta=0;
+  const rows=ms.map(m=>{const x=finCalc(m,S.reports[m]); tr+=x.received||0; ti+=x.invoiced||0; ta=x.awaiting??ta;
+    return `<tr><td><b>${MONTHS[m-1]}</b></td><td class="num">${fmt(x.received)}</td><td class="num">${fmt(x.invoiced)}</td><td class="num">${fmt(x.awaiting)}</td></tr>`;}).join('');
+  const series=MONTHS.slice(0,lm).map((_,i)=>({l:i+1,v:ach(i+1,'revenue')}));
+  return `<section class="sec">${secHead(idx,'المبالغ المحصّلة والفوترة عبر الأشهر')}
+    <div class="grid g2"><div class="card brk"><div style="font-size:13px;color:var(--muted);margin-bottom:6px">المبالغ المحصّلة شهرياً (ريال)</div>${svgBars(series)}
+      <div style="display:flex;justify-content:space-between;margin-top:8px"><span class="ku">إجمالي المحصّل حتى ${MONTHS[lm-1]}</span><b class="num" style="font-size:20px">${fmt(cum(lm,'revenue'))}</b></div></div>
+    <div><table class="tbl"><thead><tr><th>الشهر</th><th>المحصّل</th><th>المفوتر</th><th>بانتظار الفوترة</th></tr></thead><tbody>${rows}
+      <tr><td><b>آخر رصيد بانتظار الفوترة</b></td><td></td><td></td><td class="num"><b>${fmt(ta||null)}</b></td></tr></tbody></table></div></div></section>`;
+}
+function yearTenders(idx){
+  const all=allTenders(), aw=all.filter(t=>t.kind==='awarded'), cl=all.filter(t=>t.kind==='closed'), lm=lastMonth(),
+    ac=lm?(S.reports[lm].tenders||[]).filter(t=>t.kind==='active').map(t=>({...t,m:lm})):[];
+  return `<section class="sec">${secHead(idx,'مشاريع السنة')}
+    ${projCards(aw,ac,cl,['تمت ترسيتها خلال السنة','النشطة (آخر تقرير)','أُغلقت خلال السنة'])}
+    ${(aw.length||ac.length||cl.length)?tenderTable([...aw,...ac,...cl],true):'<div class="empty" style="margin-top:12px">لا توجد مشاريع مسجّلة حتى الآن</div>'}</section>`;
+}
+
+// ═══════════ History ═══════════
+function showHistory(iid){
+  const i=ini(iid);
+  const rows=reportMonths().map(m=>{ const s=S.reports[m].statuses.find(x=>x.iid===iid); return s?`<tr><td><b>${MONTHS[m-1]}</b></td><td>${statusBadge(s.status)}</td><td class="num">${s.progress!=null?s.progress+'%':'—'}</td><td>${esc(s.update)}</td></tr>`:''; }).join('');
+  modal(`سجلّ المبادرة: ${esc(i.name)}`, `<div class="eh" style="margin-bottom:12px">${logoBox(i.entity,'',i.name)}<div class="t"><b>${esc(i.name)}</b></div></div>
+    <table class="tbl"><thead><tr><th>الشهر</th><th>الحالة</th><th>الإنجاز</th><th>المستجد</th></tr></thead><tbody>${rows}</tbody></table>`, null);
+}
+
+// ═══════════ Logos ═══════════
+let pendingLogoKey = null, logoCb = null;
+function logoClick(e, el){
+  if (!editing) return;
+  e.stopPropagation(); pickLogo(el.dataset.lk);
+}
+function pickLogo(key, cb){ if(!key) { toast('أضف اسم الجهة أولاً'); return; } pendingLogoKey=key; logoCb=cb||null; const inp=$('#logoPick'); inp.value=''; inp.click(); }
+$('#logoPick').addEventListener('change', e=>{
+  const f=e.target.files[0]; if(!f||!pendingLogoKey) return;
+  readLogo(f, url=>{ S.logos[pendingLogoKey]=url; save(); if (logoCb) logoCb(); else render(); toast(`تم حفظ شعار «${pendingLogoKey}» ✓`); });
+});
+// Load an image, trim empty (transparent/white) margins, scale to max 260px → PNG dataURL
+function trimLogo(src, cb){
+  const img=new Image();
+  img.onload=()=>{ try{
+    const s0=Math.min(1,600/Math.max(img.width,img.height)), W=Math.max(1,Math.round(img.width*s0)), H=Math.max(1,Math.round(img.height*s0));
+    const c=document.createElement('canvas'); c.width=W; c.height=H; const g=c.getContext('2d'); g.drawImage(img,0,0,W,H);
+    const d=g.getImageData(0,0,W,H).data; let x0=W,y0=H,x1=-1,y1=-1;
+    for(let y=0;y<H;y++) for(let x=0;x<W;x++){ const k=(y*W+x)*4, a=d[k+3]; if(a<16) continue; if(d[k]>242&&d[k+1]>242&&d[k+2]>242) continue; if(x<x0)x0=x; if(x>x1)x1=x; if(y<y0)y0=y; if(y>y1)y1=y; }
+    if (x1<0){ cb(src); return; }
+    const pad=Math.round(Math.max(x1-x0,y1-y0)*0.04); x0=Math.max(0,x0-pad); y0=Math.max(0,y0-pad); x1=Math.min(W-1,x1+pad); y1=Math.min(H-1,y1+pad);
+    const cw=x1-x0+1, ch=y1-y0+1, s1=Math.min(1,260/Math.max(cw,ch));
+    const o=document.createElement('canvas'); o.width=Math.max(1,Math.round(cw*s1)); o.height=Math.max(1,Math.round(ch*s1));
+    o.getContext('2d').drawImage(c,x0,y0,cw,ch,0,0,o.width,o.height); cb(o.toDataURL('image/png'));
+  }catch(e){ cb(src); } };
+  img.onerror=()=>cb(src); img.src=src;
+}
+function readLogo(file, cb){ const fr=new FileReader(); fr.onload=()=>trimLogo(fr.result, cb); fr.readAsDataURL(file); }
+// One-time: trim margins of logos uploaded before this feature
+function trimExistingLogos(){
+  if (S.logosTrimmed) return; const keys=Object.keys(S.logos); if(!keys.length){ S.logosTrimmed=true; save(); return; }
+  let left=keys.length; keys.forEach(k=>trimLogo(S.logos[k], url=>{ S.logos[k]=url; if(--left===0){ S.logosTrimmed=true; save(); render(); } }));
+}
+function allLogoKeys(){
+  const set=new Set();
+  S.initiatives.forEach(i=>set.add(i.entity));
+  reportMonths().forEach(m=>{ S.reports[m].works.forEach(w=>set.add(w.entity)); (S.reports[m].tenders||[]).forEach(t=>set.add(t.client)); ['received','invoiced','awaiting'].forEach(k=>finList(S.reports[m],k).forEach(x=>set.add(x.entity))); });
+  Object.keys(S.logos).forEach(k=>set.add(k)); (S.entities||[]).forEach(k=>set.add(k));
+  return [...set].filter(Boolean);
+}
+
+// ═══════════ Modal framework ═══════════
+function modal(title, body, onSave, wide){
+  const ov=document.createElement('div'); ov.className='ov';
+  ov.innerHTML=`<div class="md" ${wide?'style="width:min(1140px,100%)"':''}><div class="md-h"><h3>${title}</h3><button class="x" data-close>×</button></div><div class="md-b">${body}</div>
+    <div class="md-f">${onSave?`<button class="btn" data-close>إلغاء</button><button class="btn primary" data-save>حفظ</button>`:`<button class="btn" data-close>إغلاق</button>`}</div></div>`;
+  document.body.appendChild(ov);
+  ov.addEventListener('click', e=>{
+    if (e.target===ov || e.target.hasAttribute('data-close')) ov.remove();
+    if (e.target.hasAttribute('data-save')) { if (onSave(ov)!==false){ ov.remove(); save(); render(); toast('تم الحفظ ✓'); } }
+  });
+  return ov;
+}
+function rowTools(){ return `<div class="ic"><span class="drag" title="اسحب لإعادة الترتيب">⠿</span><button type="button" onclick="this.closest('.frow').remove()" title="حذف">✕</button></div>`; }
+// Drag & drop reordering for editor rows (pointer events: mouse + touch)
+document.addEventListener('pointerdown', e=>{
+  const hd=e.target.closest('.frow .drag'); if(!hd) return;
+  e.preventDefault();
+  const row=hd.closest('.frow'), list=row.parentNode, r=row.getBoundingClientRect(), orig=row.getAttribute('style')||'';
+  const ph=document.createElement('div'); ph.className='frow-ph'; ph.style.height=r.height+'px';
+  list.insertBefore(ph,row);
+  row.classList.add('dragging');
+  row.setAttribute('style', orig+`;position:fixed;left:${r.left}px;top:${r.top}px;width:${r.width}px;z-index:800;margin:0`);
+  const offY=e.clientY-r.top, sc=list.closest('.md-b');
+  const move=ev=>{
+    row.style.top=(ev.clientY-offY)+'px';
+    const sibs=[...list.children].filter(c=>c.classList.contains('frow') && c!==row);
+    let placed=false;
+    for(const s of sibs){ const b=s.getBoundingClientRect(); if(ev.clientY < b.top+b.height/2){ if(ph.nextSibling!==s) list.insertBefore(ph,s); placed=true; break; } }
+    if(!placed && list.lastElementChild!==ph) list.appendChild(ph);
+    if(sc){ const sb=sc.getBoundingClientRect(); if(ev.clientY<sb.top+50) sc.scrollTop-=14; else if(ev.clientY>sb.bottom-50) sc.scrollTop+=14; }
+  };
+  const up=()=>{
+    document.removeEventListener('pointermove',move); document.removeEventListener('pointerup',up); document.removeEventListener('pointercancel',up);
+    list.insertBefore(row,ph); ph.remove(); row.classList.remove('dragging'); row.setAttribute('style',orig);
+    row.classList.add('dropped'); setTimeout(()=>row.classList.remove('dropped'),500);
+    list.dispatchEvent(new Event('input',{bubbles:true}));
+  };
+  document.addEventListener('pointermove',move); document.addEventListener('pointerup',up); document.addEventListener('pointercancel',up);
+});
+function moveRow(b,d){ const r=b.closest('.frow'), p=r.parentNode; if(d<0&&r.previousElementSibling) p.insertBefore(r,r.previousElementSibling); if(d>0&&r.nextElementSibling) p.insertBefore(r.nextElementSibling,r); }
+document.addEventListener('change', e=>{ const f=e.target; if(!f.matches||!f.matches('.frow input[list=entList]')) return; const n=f.value.trim(); const lg=f.closest('.frow').querySelector('.lg.pick'); if(!lg) return; lg.className=`lg ${n&&S.logos[n]?'':'none'} pick`; lg.innerHTML=(n&&S.logos[n]?`<img src="${S.logos[n]}">`:`<span>${n?esc(initials(n)):'＋'}</span>`)+'<i class="pick-caret">▾</i>'; });
+function addRow(id,html){ const t=document.createElement('div'); t.innerHTML=html; document.getElementById(id).appendChild(t.firstElementChild); }
+// ── Entity picker (dropdown with logos + add new) ──
+function rowLogoView(key, sel){ const src=key&&S.logos[key];
+  return `<div class="lg ${src?'':'none'} pick" style="width:52px;height:52px" onclick="openLogoPicker(this,'${sel}')" title="اختر الجهة وشعارها">${src?`<img src="${src}">`:`<span>${key?esc(initials(key)):'＋'}</span>`}<i class="pick-caret">▾</i></div>`; }
+function entityNames(){ return allLogoKeys().sort((a,b)=>(S.logos[b]?1:0)-(S.logos[a]?1:0) || a.localeCompare(b,'ar')); }
+function addEntity(n){ n=(n||'').trim(); if(!n) return; S.entities=S.entities||[]; if(!S.entities.includes(n)) S.entities.push(n); }
+let picker=null;
+function closePicker(){ if(picker){ picker.remove(); picker=null; } }
+function openLogoPicker(el, sel){
+  closePicker();
+  const row=el.closest('.frow'), field=row.querySelector(sel.split('|')[0]);
+  const p=document.createElement('div'); p.className='lpick';
+  p.innerHTML=`<input class="lp-s" placeholder="ابحث أو اكتب اسم جهة جديدة…" autocomplete="off"><div class="lp-l"></div>
+    <div class="lp-f"><button type="button" class="btn sm primary" data-act="new">⬆ إضافة جهة جديدة مع شعار</button><button type="button" class="btn sm" data-act="clear">إزالة</button></div>`;
+  document.body.appendChild(p); picker=p;
+  const rc=el.getBoundingClientRect();
+  p.style.top=Math.max(8,Math.min(window.innerHeight-380, rc.bottom+6))+'px';
+  p.style.left=Math.max(8,Math.min(window.innerWidth-320, rc.right-310))+'px';
+  const list=p.querySelector('.lp-l'), s=p.querySelector('.lp-s'), cur=field.value.trim();
+  const draw=()=>{ const q=s.value.trim(); const names=entityNames().filter(n=>!q||n.includes(q));
+    list.innerHTML = names.map(n=>`<div class="lp-i ${n===cur?'on':''}" data-n="${esc(n)}">${logoBox(n,'sm')}<span>${esc(n)}</span>${S.logos[n]?'':'<em>بدون شعار</em>'}</div>`).join('')
+      + (q && !names.includes(q) ? `<div class="lp-i lp-add" data-new="${esc(q)}">＋ إضافة «${esc(q)}» كجهة جديدة مع شعار</div>` : '')
+      + (!names.length && !q ? '<div class="hint" style="padding:10px">لا توجد جهات بعد</div>' : ''); };
+  draw(); s.addEventListener('input',draw); setTimeout(()=>s.focus(),0);
+  const apply=n=>{ field.value=n; addEntity(n); save(); el.className=`lg ${S.logos[n]?'':'none'} pick`; el.innerHTML=(S.logos[n]?`<img src="${S.logos[n]}">`:`<span>${esc(initials(n))}</span>`)+'<i class="pick-caret">▾</i>'; field.dispatchEvent(new Event('input',{bubbles:true})); refreshEntList(); closePicker(); };
+  const uploadNew=n=>{ addEntity(n); pickLogo(n, ()=>{ apply(n); toast(`حُفظت «${n}» وشعارها في مكتبة الجهات ✓`); }); };
+  p.addEventListener('click', e=>{
+    e.stopPropagation();
+    const it=e.target.closest('.lp-i');
+    if (it && it.dataset.n!=null) return apply(it.dataset.n);
+    if (it && it.dataset.new!=null) return uploadNew(it.dataset.new);
+    const act=e.target.dataset.act;
+    if (act==='new'){ const nm=s.value.trim()||field.value.trim()||prompt('اسم الجهة:'); if(nm) uploadNew(nm.trim()); }
+    if (act==='clear'){ field.value=''; el.className='lg none pick'; el.innerHTML='<span>＋</span><i class="pick-caret">▾</i>'; closePicker(); }
+  });
+  s.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); const first=list.querySelector('.lp-i'); if(first) first.click(); } });
+}
+document.addEventListener('mousedown', e=>{ if(picker && !e.target.closest('.lpick') && !e.target.closest('.pick')) closePicker(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closePicker(); });
+function refreshEntList(){ const dl=document.getElementById('entList'); if(dl) dl.innerHTML=entityNames().map(n=>`<option value="${esc(n)}">`).join(''); }
+
+// Works
+function workRow(w, m){ const ph = m ? workPhase(m,w) : (w.phase||'started');
+  return `<div class="frow" style="grid-template-columns:auto 1fr 2fr auto">${rowLogoView(w.entity,'[data-f=entity]')}<input type="hidden" data-f="entity" value="${esc(w.entity)}">
+    <div style="display:flex;flex-direction:column;gap:6px"><input data-f="title" placeholder="العنوان (اسم البند)" value="${esc(w.title)}">
+      <select data-f="phase">${Object.keys(WORK_PHASES).map(k=>`<option value="${k}" ${ph===k?'selected':''}>${WORK_PHASES[k].l}</option>`).join('')}</select></div>
+    <textarea data-f="desc" placeholder="الوصف">${esc(w.desc)}</textarea>${rowTools()}</div>`; }
+function editWorks(m){
+  const r=S.reports[m];
+  modal(`أعمال ${MONTHS[m-1]}`, `<p class="hint">اختر الجهة من مربّع الشعار (▾)، وحدّد لكل بند: «بدأت هذا الشهر» أو «مستمر العمل فيها». في التقرير يظهر شعار الجهة فقط.</p><div id="wl">${r.works.map(w=>workRow(w,m)).join('')}</div><button class="btn" onclick="addRow('wl',workRow({title:'',entity:'',desc:'',phase:'started'}))">＋ إضافة بند</button>`,
+    ov=>{ markReviewed(m,'works'); r.works=[...ov.querySelectorAll('#wl .frow')].map(f=>({title:f.querySelector('[data-f=title]').value.trim(),entity:f.querySelector('[data-f=entity]').value.trim(),desc:f.querySelector('[data-f=desc]').value.trim(),phase:f.querySelector('[data-f=phase]').value})).filter(w=>w.title||w.desc); }, true);
+}
+// Statuses
+function statusOpts(sel){ return Object.keys(STATUSES).map(k=>`<option value="${k}" ${k===sel?'selected':''}>${STATUSES[k].l}</option>`).join(''); }
+function stRow(s){ const i=S.initiatives.find(x=>x.id===s.iid)||{id:s.iid,name:'',entity:''};
+  return `<div class="frow" data-iid="${esc(i.id)}" style="grid-template-columns:auto 1.3fr .9fr .55fr 2fr auto">${rowLogoView(i.entity,'[data-f=entity]')}<input type="hidden" data-f="entity" value="${esc(i.entity)}">
+    <input data-f="name" placeholder="اسم المبادرة" value="${esc(i.name)}">
+    <select data-f="status">${statusOpts(s.status)}</select><input data-f="progress" class="ltr" type="number" min="0" max="100" placeholder="%" value="${s.progress??''}">
+    <textarea data-f="update" placeholder="آخر مستجد">${esc(s.update)}</textarea>${rowTools()}</div>`; }
+function editStatuses(m){
+  const r=S.reports[m];
+  modal(`حالة المبادرات — ${MONTHS[m-1]}`, `<p class="hint">شعار الجهة (▾) · المبادرة · الحالة · نسبة الإنجاز (0–100) · آخر مستجد. تعديل الاسم أو الجهة يُطبَّق على كل الأشهر.</p><div id="sl">${r.statuses.map(stRow).join('')}</div>
+    <button class="btn" onclick="addRow('sl',stRow({iid:'i'+Date.now(),status:'new',progress:null,update:''}))">＋ إضافة مبادرة</button>`,
+    ov=>{ markReviewed(m,'statuses'); const out=[]; ov.querySelectorAll('#sl .frow').forEach(f=>{ const iid=f.dataset.iid, name=f.querySelector('[data-f=name]').value.trim(); if(!name) return;
+      let i=S.initiatives.find(x=>x.id===iid); if(!i){ i={id:iid}; S.initiatives.push(i); } i.name=name; i.entity=f.querySelector('[data-f=entity]').value.trim();
+      let p=num(f.querySelector('[data-f=progress]').value); if(p!=null) p=Math.max(0,Math.min(100,Math.round(p)));
+      out.push({iid,status:f.querySelector('[data-f=status]').value,progress:p,update:f.querySelector('[data-f=update]').value.trim()}); }); r.statuses=out; }, true);
+}
+// Month numbers (achievements)
+function editAchievements(m){
+  const a=S.achievements[String(m)]||{};
+  modal(`أرقام شهر ${MONTHS[m-1]}`, `<p class="hint">أدخل ما تحقّق <b>خلال ${MONTHS[m-1]} فقط</b>. تتراكم تلقائياً في «ملخّص السنة» وتُقارن بالمستهدفات والشهر السابق.</p>
+    ${S.targets.map(t=>{ const locked = t.id==='revenue' && finList(S.reports[m],'received').length;
+      return `<div class="fld"><label>${esc(t.name)}${t.money?' (ريال)':''}${locked?' — <span style="color:var(--a1)">يُحسب من قائمة المبالغ المحصّلة في الوضع المالي</span>':''}</label><input class="ltr" ${locked?'disabled':`data-t="${t.id}"`} type="number" step="any" value="${a[t.id]??0}"></div>`; }).join('')}`,
+    ov=>{ markReviewed(m,'numbers'); const o=S.achievements[String(m)]=S.achievements[String(m)]||{}; ov.querySelectorAll('[data-t]').forEach(i=>o[i.dataset.t]=num(i.value)||0); });
+}
+// Financial
+function finRow(x){ return `<div class="frow" style="grid-template-columns:auto 1.4fr 1fr 1.2fr auto">${rowLogoView(x.entity,'[data-f=entity]')}<input type="hidden" data-f="entity" value="${esc(x.entity)}">
+  <input data-f="item" placeholder="البند (مثلاً: أمنية تحققت)" value="${esc(x.item||'')}"><input data-f="amount" class="ltr" type="number" step="any" placeholder="المبلغ" value="${x.amount??''}">
+  <input data-f="note" placeholder="ملاحظة (اختياري: رقم الفاتورة، المشروع…)" value="${esc(x.note||'')}">${rowTools()}</div>`; }
+function finBlock(k, list){
+  return `<h4 style="margin:16px 0 6px;display:flex;align-items:center;gap:10px">${FIN_LISTS[k].l}<span class="hint" style="margin:0">${FIN_LISTS[k].note}</span><span style="flex:1"></span><span class="num" id="sum_${k}" style="color:var(--a1)">${fmt(listSum(list))}</span></h4>
+    <div id="fl_${k}" oninput="finSum('${k}')">${list.map(finRow).join('')}</div>
+    <button class="btn sm" type="button" onclick="addRow('fl_${k}',finRow({item:'',entity:'',amount:null}));finSum('${k}')">＋ إضافة بند</button>`;
+}
+function finSum(k){ const t=[...document.querySelectorAll(`#fl_${k} [data-f=amount]`)].reduce((s,i)=>s+(num(i.value)||0),0); const el=document.getElementById('sum_'+k); if(el) el.textContent=fmt(t);
+  if(k==='received'){ const fb=document.getElementById('finRevWrap'); if(fb) fb.style.display=document.querySelectorAll('#fl_received .frow').length?'none':''; } }
+function editFinancial(m){
+  const f=S.reports[m].financial=S.reports[m].financial||{};
+  ['received','invoiced','awaiting'].forEach(k=>{ if(!Array.isArray(f[k])) f[k]=[]; });
+  const ov=modal(`الوضع المالي — ${MONTHS[m-1]}`, `<p class="hint">لكل بند: اختر الجهة من مربّع الشعار (▾)، واكتب اسم البند والمبلغ؛ الإجمالي يُحسب تلقائياً. مجموع «المبالغ المحصّلة» هو نفسه المحصّل في مستهدف الإيرادات ويتراكم في ملخّص السنة.</p>
+    ${finBlock('received', f.received)}
+    <div class="fld" id="finRevWrap" style="margin-top:10px;${f.received.length?'display:none':''}"><label>أو إجمالي المحصّل بدون تفصيل (ريال)</label><input class="ltr" id="finRev" type="number" step="any" value="${ach(m,'revenue')}"></div>
+    ${finBlock('invoiced', f.invoiced)}
+    ${finBlock('awaiting', f.awaiting)}`,
+    ov=>{ markReviewed(m,'financial');
+      const read=k=>[...ov.querySelectorAll(`#fl_${k} .frow`)].map(r=>({item:r.querySelector('[data-f=item]').value.trim(),entity:r.querySelector('[data-f=entity]').value.trim(),amount:num(r.querySelector('[data-f=amount]').value),note:r.querySelector('[data-f=note]').value.trim()})).filter(x=>x.item||x.entity||x.amount!=null);
+      f.received=read('received'); f.invoiced=read('invoiced'); f.awaiting=read('awaiting');
+      const a=S.achievements[String(m)]=S.achievements[String(m)]||{};
+      a.revenue = f.received.length ? listSum(f.received) : (num(ov.querySelector('#finRev').value)||0);
+    }, true);
+}
+// Projects
+function tRow(t){ return `<div class="frow" style="grid-template-columns:auto 1.6fr 1fr .9fr auto">${rowLogoView(t.client,'[data-f=client]')}<input type="hidden" data-f="client" value="${esc(t.client)}">
+  <input data-f="name" placeholder="اسم المشروع" value="${esc(t.name)}">
+  <select data-f="kind">${Object.keys(PROJ).map(k=>`<option value="${k}" ${t.kind===k?'selected':''}>${PROJ[k].l}</option>`).join('')}</select>
+  <input data-f="value" class="ltr" type="number" step="any" placeholder="القيمة" value="${t.value??''}">${rowTools()}</div>`; }
+function editTenders(m){
+  const r=S.reports[m];
+  modal(`المشاريع — ${MONTHS[m-1]}`, `<p class="hint">الحالات: تمت الترسية · نشط · أُغلق. عند إنشاء شهر جديد تنتقل المشاريع المُرسّاة والنشطة إليه كـ«نشط»، والمغلقة لا تنتقل.</p><div id="tl">${(r.tenders||[]).map(tRow).join('')}</div>
+    <button class="btn" onclick="addRow('tl',tRow({name:'',client:'',kind:'awarded',value:null}))">＋ إضافة مشروع</button>`,
+    ov=>{ markReviewed(m,'tenders'); r.tenders=[...ov.querySelectorAll('#tl .frow')].map(f=>({name:f.querySelector('[data-f=name]').value.trim(),client:f.querySelector('[data-f=client]').value.trim(),kind:f.querySelector('[data-f=kind]').value,value:num(f.querySelector('[data-f=value]').value)})).filter(x=>x.name); }, true);
+}
+// Challenges
+function cRow(c,m){ const r=S.reports[m];
+  return `<div class="frow" style="grid-template-columns:1.1fr 1.4fr 1.4fr .9fr .8fr auto"><input data-f="title" placeholder="العنوان" value="${esc(c.title)}">
+    <textarea data-f="cause" placeholder="وصف التحدّي">${esc(c.cause||'')}</textarea><textarea data-f="treatment" placeholder="المعالجة">${esc(c.treatment||'')}</textarea>
+    <select data-f="iid"><option value="">— بدون ربط —</option>${r.statuses.map(s=>`<option value="${s.iid}" ${c.iid===s.iid?'selected':''}>${esc(ini(s.iid).name)}</option>`).join('')}</select>
+    <select data-f="severity">${Object.keys(SEVERITY).map(k=>`<option value="${k}" ${c.severity===k?'selected':''}>${SEVERITY[k].l}</option>`).join('')}</select>${rowTools()}</div>`; }
+function editChallenges(m){
+  const r=S.reports[m], autos=challengesList(m,r).filter(c=>c.auto);
+  modal(`التحديات والمعالجات — ${MONTHS[m-1]}`, `<label style="display:flex;gap:8px;align-items:center;margin-bottom:10px;font-size:14px"><input type="checkbox" id="autoCh" ${S.autoChallenges?'checked':''}> إظهار المبادرات المعلّقة والمتعثّرة تلقائياً كتحديات</label>
+    ${autos.length?`<p class="hint">${autos.length} تحدٍّ مُستمَد تلقائياً. لإضافة معالجة لها: <button class="btn sm" type="button" onclick="adoptAutos(${m})">تحويلها إلى يدويّة</button></p>`:''}
+    <div id="cl">${(r.challenges||[]).map(c=>cRow(c,m)).join('')}</div><button class="btn" onclick="addRow('cl',cRow({title:'',cause:'',treatment:'',iid:'',severity:'medium'},${m}))">＋ إضافة تحدٍّ</button>`,
+    ov=>{ markReviewed(m,'challenges'); S.autoChallenges=ov.querySelector('#autoCh').checked; r.challenges=[...ov.querySelectorAll('#cl .frow')].map(f=>({title:f.querySelector('[data-f=title]').value.trim(),cause:f.querySelector('[data-f=cause]').value.trim(),treatment:f.querySelector('[data-f=treatment]').value.trim(),iid:f.querySelector('[data-f=iid]').value,severity:f.querySelector('[data-f=severity]').value})).filter(c=>c.title||c.cause); }, true);
+}
+function adoptAutos(m){ const r=S.reports[m]; challengesList(m,r).filter(c=>c.auto).forEach(c=>addRow('cl',cRow({title:c.title,cause:c.cause,treatment:'',iid:c.iid,severity:c.severity},m))); }
+
+// Settings
+function openSettings(){
+  closeMenu();
+  const tRows=S.targets.map(t=>`<div class="frow" data-id="${t.id}" style="grid-template-columns:1.2fr .8fr 1fr .7fr"><input data-f="name" value="${esc(t.name)}"><input data-f="type" value="${esc(t.type)}"><input data-f="annual" class="ltr" type="number" step="any" value="${t.annual}"><label style="font-size:13px;display:flex;gap:6px;align-items:center"><input type="checkbox" data-f="money" ${t.money?'checked':''} style="width:auto"> مالي</label></div>`).join('');
+  const grid=`<table class="mgrid"><thead><tr><th>المستهدف</th>${MONTHS.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${S.targets.map(t=>`<tr><th>${esc(t.name)}</th>${MONTHS.map((_,i)=>`<td><input data-m="${i+1}" data-t="${t.id}" value="${S.achievements[String(i+1)]?.[t.id]??''}"></td>`).join('')}</tr>`).join('')}</tbody></table>`;
+  const logos=allLogoKeys().map(k=>`<div class="lgrow">${logoBox(k)}<span class="n">${esc(k)}</span><button class="btn sm" type="button" onclick="settingsLogo(this)" data-k="${esc(k)}">⬆ رفع</button>${S.logos[k]?`<button class="btn sm danger" type="button" onclick="delete S.logos[this.dataset.k];save();this.closest('.lgrow').querySelector('.lg').outerHTML=logoBox(this.dataset.k);this.remove()" data-k="${esc(k)}">حذف</button>`:''}</div>`).join('');
+  modal('الإعدادات', `<div class="two"><div class="fld"><label>السنة</label><input id="setYear" class="ltr" type="number" value="${S.year}"></div><div class="fld"><label>الجهة المُعِدّة</label><input id="setBy" value="${esc(S.preparedBy)}"></div></div>
+    <div class="fld"><label>الجهة المستهدفة بالتقرير</label><input id="setAud" value="${esc(S.audience)}"></div>
+    <h4 style="margin:18px 0 8px">المستهدفات السنويّة</h4><p class="hint">مستهدف الشهر = السنوي ÷ 12.</p>${tRows}
+    <h4 style="margin:18px 0 8px">سجلّ التحقّق الشهري</h4><p class="hint">ما تحقّق في كل شهر (وليس التراكمي).</p><div style="overflow:auto">${grid}</div>
+    <h4 style="margin:18px 0 8px">مكتبة الجهات وشعاراتها</h4><p class="hint">هذه الجهات تظهر في القائمة المنسدلة عند كل بطاقة. يُفضّل PNG بخلفيّة شفّافة، ويُصغَّر تلقائياً.</p>
+    <div style="display:flex;gap:8px;margin-bottom:10px"><input id="newEnt" placeholder="اسم جهة جديدة" style="flex:1;background:var(--bg1);border:1px solid var(--line2);border-radius:8px;padding:8px 10px"><button class="btn sm primary" type="button" onclick="settingsAddEntity()">⬆ إضافة مع شعار</button></div>
+    <div id="entLib">${logos}</div>
+    <h4 style="margin:18px 0 8px">لوحات المؤشرات</h4><button class="btn sm" type="button" onclick="S.kpi=null;S=migrate(S);save();toast('تمت إعادة ضبط المؤشرات')">⟲ إعادة ضبط المؤشرات للوضع الافتراضي</button>`,
+    ov=>{ S.year=parseInt(ov.querySelector('#setYear').value)||S.year; S.preparedBy=ov.querySelector('#setBy').value.trim(); S.audience=ov.querySelector('#setAud').value.trim()||'الرئيس التنفيذي';
+      ov.querySelectorAll('.frow[data-id]').forEach(f=>{ const t=S.targets.find(x=>x.id===f.dataset.id); t.name=f.querySelector('[data-f=name]').value.trim(); t.type=f.querySelector('[data-f=type]').value.trim(); t.annual=num(f.querySelector('[data-f=annual]').value)||0; t.money=f.querySelector('[data-f=money]').checked; });
+      ov.querySelectorAll('.mgrid input').forEach(i=>{ const m=i.dataset.m, v=num(i.value); if(v==null){ if(S.achievements[m]) delete S.achievements[m][i.dataset.t]; } else (S.achievements[m]=S.achievements[m]||{})[i.dataset.t]=v; }); }, true);
+}
+function settingsAddEntity(){ const inp=document.getElementById('newEnt'); const n=inp.value.trim(); if(!n){ toast('اكتب اسم الجهة'); return; }
+  addEntity(n); pickLogo(n, ()=>{ const lib=document.getElementById('entLib'); lib.insertAdjacentHTML('afterbegin', `<div class="lgrow">${logoBox(n)}<span class="n">${esc(n)}</span><button class="btn sm" type="button" onclick="settingsLogo(this)" data-k="${esc(n)}">⬆ تغيير</button></div>`); inp.value=''; refreshEntList(); }); }
+function settingsLogo(btn){ const k=btn.dataset.k; pickLogo(k, ()=>{ btn.closest('.lgrow').querySelector('.lg').outerHTML=logoBox(k); }); }
+
+// Months
+const REVIEW_LABELS={works:'أعمال الشهر',statuses:'حالة المبادرات',financial:'الوضع المالي',tenders:'المشاريع',challenges:'التحديات',numbers:'أرقام المستهدفات'};
+function needsReview(m,k){ const r=S.reports[m]; return !!(r && r.review && r.review[k]===false); }
+function reviewChip(m,k){ if(!needsReview(m,k)) return ''; const r=S.reports[m];
+  return `<span class="rv-chip no-print">⚠ منسوخ من ${MONTHS[r.copiedFrom-1]||'الشهر السابق'} · بانتظار المراجعة <button onclick="markReviewed(${m},'${k}',true)">✓ تمت المراجعة</button></span>`; }
+function markReviewed(m,k,rerender){ const r=S.reports[m]; if(r&&r.review){ r.review[k]=true; if(Object.values(r.review).every(Boolean)) delete r.review; } if(rerender){ save(); render(); toast(`تمت مراجعة «${REVIEW_LABELS[k]}» ✓`); } }
+function reviewBanner(m){ const r=S.reports[m]; if(!r.review) return ''; const keys=Object.keys(r.review), done=keys.filter(k=>r.review[k]).length;
+  return `<section class="sec no-print"><div class="rv-banner glass"><div style="font-size:15px">⚠ <b>تقرير ${MONTHS[m-1]} منسوخ بالكامل من ${MONTHS[r.copiedFrom-1]||'الشهر السابق'}</b> — راجع كل قسم وعدّل أو احذف ما تكرّر قبل اعتماد التقرير.
+    <span class="num" style="color:var(--a1)">(${done}/${keys.length})</span></div>
+    <div class="rv-list">${keys.map(k=>`<span class="${r.review[k]?'ok':''}">${r.review[k]?'✓':'○'} ${REVIEW_LABELS[k]}</span>`).join('')}</div>
+    <div class="hint" style="margin:8px 0 0">«أرقام المستهدفات» و«الوضع المالي» منسوخة أيضاً، ولو بقيت بدون تعديل ستُحتسب مرّتين في ملخّص السنة.</div>
+    <div style="margin-top:10px"><button class="btn sm" onclick="approveAll(${m})">✓ اعتماد كل الأقسام كما هي</button></div></div></section>`; }
+function approveAll(m){ if(!confirm('اعتماد كل الأقسام كما هي؟\nتأكّد أن الأعمال والأرقام لا تتكرّر مع الشهر السابق.')) return; delete S.reports[m].review; save(); render(); toast('تم اعتماد التقرير ✓'); }
+
+function newMonth(){
+  const last=lastMonth(), next=last?last+1:(new Date().getMonth()+1);
+  if (next>12){ toast('اكتملت أشهر السنة'); return; }
+  if (!confirm(`إنشاء تقرير ${MONTHS[next-1]}؟\n\nسيتم نسخ كل بيانات ${last?MONTHS[last-1]:'الشهر السابق'} كما هي: الأعمال، حالة المبادرات، الوضع المالي، المشاريع، التحديات، وأرقام المستهدفات.\nبعدها راجع كل قسم وعدّله يدوياً.`)) return;
+  const src = last ? JSON.parse(JSON.stringify(S.reports[last])) : {works:[],statuses:[],financial:{},tenders:[],challenges:[]};
+  delete src.review; delete src.copiedFrom;
+  S.reports[next] = last ? {...src, copiedFrom:last, review:{works:false,statuses:false,financial:false,tenders:false,challenges:false,numbers:false}} : src;
+  S.achievements[String(next)] = last ? {...(S.achievements[String(last)]||{})} : (S.achievements[String(next)]||{});
+  save(); location.hash='m-'+next; if(!editing) toggleEdit(); else render(); toast(`تم إنشاء تقرير ${MONTHS[next-1]} منسوخاً من ${last?MONTHS[last-1]:'—'} — راجع الأقسام`);
+}
+function deleteMonth(m){
+  const r=S.reports[m], name=MONTHS[m-1];
+  const ov=modal(`حذف تقرير ${name}`, `<p style="margin-top:0">سيتم حذف تقرير <b>${name} ${S.year}</b> نهائياً، ويشمل:</p>
+    <ul style="color:var(--muted);font-size:14px;line-height:2;margin:0 0 10px">
+      <li><span class="num">${r.works.length}</span> بند من أعمال الشهر</li><li>حالة <span class="num">${r.statuses.length}</span> مبادرة</li>
+      <li><span class="num">${(r.tenders||[]).length}</span> مشروع · <span class="num">${(r.challenges||[]).length}</span> تحدٍّ مسجّل</li><li>المبالغ المفوترة وبانتظار الفوترة</li></ul>
+    <label style="display:flex;gap:8px;align-items:center;margin:10px 0;font-size:14px"><input type="checkbox" id="delNums" checked style="width:auto"> حذف أرقام المستهدفات لهذا الشهر أيضاً (المحصّل <span class="num">${fmt(ach(m,'revenue'))}</span> ريال، والعروض والمشاريع والفرص)</label>
+    <div class="fld" style="margin-top:14px"><label>للتأكيد، اكتب اسم الشهر: <b style="color:var(--bad)">${name}</b></label><input id="delConfirm" autocomplete="off" placeholder="${name}"></div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><button class="btn sm" type="button" onclick="exportJSON()">⬇ حفظ نسخة احتياطيّة قبل الحذف</button><span class="hint" style="margin:0;color:var(--bad)">لا يمكن التراجع عن الحذف.</span></div>`,
+    ov=>{ if(ov.querySelector('#delConfirm').value.trim()!==name){ toast('اسم الشهر غير مطابق'); return false; }
+      delete S.reports[m]; if(ov.querySelector('#delNums').checked) delete S.achievements[String(m)]; location.hash=''; });
+  const btn=ov.querySelector('[data-save]'); btn.textContent='🗑 حذف نهائي'; btn.classList.remove('primary'); btn.classList.add('danger-fill'); btn.disabled=true;
+  const inp=ov.querySelector('#delConfirm'); inp.focus();
+  inp.addEventListener('input',()=>{ btn.disabled = inp.value.trim()!==name; });
+}
+
+// ═══════════ Toolbar ═══════════
+function toggleEdit(){ editing=!editing; const b=$('#btnEdit'); b.classList.toggle('on',editing); b.textContent=editing?'✓ إنهاء التحرير':'✎ وضع التحرير'; render(); }
+function toggleMenu(e){ e.stopPropagation(); $('#moreMenu').classList.toggle('open'); }
+function closeMenu(){ $('#moreMenu').classList.remove('open'); }
+document.addEventListener('click', e=>{ if(!e.target.closest('.menu-wrap')) closeMenu(); });
+function setTheme(t){ document.documentElement.dataset.theme=t; localStorage.setItem(STORE_KEY+'_theme',t); closeMenu(); render(); }
+(function(){ const t=localStorage.getItem(STORE_KEY+'_theme'); if(t && t!=='light') document.documentElement.dataset.theme=t; })();
+function exportJSON(){ closeMenu(); const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,2)],{type:'application/json'})); a.download=`التقرير-الشهري-نسخة-${new Date().toISOString().slice(0,10)}.json`; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),500); toast('تم حفظ النسخة ✓'); }
+function importJSON(inp){ const f=inp.files[0]; if(!f) return; const rd=new FileReader(); rd.onload=()=>{ try{ const d=JSON.parse(rd.result); if(!d.reports||!d.targets) throw 0; S=migrate(d); save(); render(); toast('تم الاستيراد ✓'); }catch(e){ alert('الملف غير صالح'); } inp.value=''; }; rd.readAsText(f); }
+function resetAll(){ closeMenu(); if(!confirm('استرجاع بيانات تقرير يوليو الأصليّة؟ ستُحذف كل تعديلاتك (بما فيها الشعارات).')) return; S=migrate(defaults()); save(); location.hash=''; render(); toast('تم الاسترجاع'); }
+
+// ═══════════ TV mode ═══════════
+let tv={i:0,n:0,timer:null,playing:true,dur:12000};
+function startTV(){
+  const v=currentView(); const wasEd=editing; editing=false;
+  let slides=[], label='';
+  if (v==='year'){ const lm=lastMonth()||1; label=`ملخّص سنة ${S.year}`; slides=[cover(label), ...yearSections()]; }
+  else { const m=v, r=S.reports[m]; label=`تقرير ${MONTHS[m-1]} ${S.year}`; const pm=prevReportMonth(m);
+    slides=[cover(label), secWorks(m,r,'01')];
+    { const srt=[...r.statuses].sort((x,y)=>STATUS_ORDER.indexOf(x.status)-STATUS_ORDER.indexOf(y.status)); for(let k=0;k<srt.length;k+=6) slides.push(secStatus(m,{...r,statuses:srt.slice(k,k+6)},'02',true)); }
+    slides.push(secFinancial(m,r,'03'), secTenders(m,r,'04'), secChallenges(m,r,'05'), kpiPanel('month',{m,r,pm,pr:pm?S.reports[pm]:null},`لوحة مؤشرات ${MONTHS[m-1]}`,'06')); }
+  editing=wasEd;
+  $('#tvLogo').innerHTML=LOGO; $('#tvMonth').textContent=label;
+  $('#tvStage').innerHTML=slides.map(s=>`<div class="tv-slide"><div class="tv-fit">${s}</div></div>`).join('');
+  $('#tvDots').innerHTML=slides.map((_,i)=>`<i onclick="tvShow(${i})"></i>`).join('');
+  tv.n=slides.length; tv.playing=true; $('#tvPlay').textContent='⏸ إيقاف';
+  document.body.classList.add('tvmode'); document.documentElement.requestFullscreen?.().catch(()=>{});
+  tvShow(0);
+}
+function cover(label){ return `<div class="tv-cover">${LOGO}<h1>التقرير الشهري</h1><div class="m">${label}</div><div style="color:var(--muted)">مُعدّ لـ${esc(S.audience)} · ${esc(S.preparedBy)}</div></div>`; }
+function tvFit(el){ const f=el.querySelector('.tv-fit'); f.style.transform='none'; const H=el.clientHeight-10, W=el.clientWidth-10; const sc=Math.min(1.45, H/f.scrollHeight, W/f.scrollWidth); f.style.transform=`scale(${sc})`; }
+function tvShow(i){
+  tv.i=((i%tv.n)+tv.n)%tv.n;
+  document.querySelectorAll('.tv-slide').forEach((s,k)=>{ s.classList.toggle('on',k===tv.i); if(k===tv.i){ tvFit(s); countUp(s); } });
+  document.querySelectorAll('#tvDots i').forEach((d,k)=>d.classList.toggle('on',k===tv.i));
+  const p=$('#tvProg'); p.style.transition='none'; p.style.width='0'; clearTimeout(tv.timer);
+  if (tv.playing){ requestAnimationFrame(()=>requestAnimationFrame(()=>{ p.style.transition=`width ${tv.dur}ms linear`; p.style.width='100%'; })); tv.timer=setTimeout(()=>tvShow(tv.i+1),tv.dur); }
+}
+function tvToggle(){ tv.playing=!tv.playing; $('#tvPlay').textContent=tv.playing?'⏸ إيقاف':'▶ تشغيل'; tvShow(tv.i); }
+function stopTV(){ clearTimeout(tv.timer); document.body.classList.remove('tvmode'); if(document.fullscreenElement) document.exitFullscreen().catch(()=>{}); }
+document.addEventListener('keydown', e=>{ if(!document.body.classList.contains('tvmode')) return;
+  if(e.key==='Escape') stopTV(); if(e.key==='ArrowLeft') tvShow(tv.i+1); if(e.key==='ArrowRight') tvShow(tv.i-1); if(e.key===' '){ e.preventDefault(); tvToggle(); } });
+window.addEventListener('resize', ()=>{ const s=document.querySelector('.tv-slide.on'); if(s) tvFit(s); });
+
+function exportPublish(){
+  closeMenu(); const d=JSON.parse(JSON.stringify(S)); d.publishedAt=new Date().toISOString();
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(d)],{type:'application/json'})); a.download='data.json'; a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),500);
+  toast('تم تصدير data.json — ارفعه على المستودع ليتحدّث الرابط المنشور');
+}
+async function boot(){
+  if (!HOSTED){ render(); trimExistingLogos(); return; }
+  if (VIEWER) document.body.classList.add('viewer');
+  const hasLocal = !!localStorage.getItem(STORE_KEY);
+  if (VIEWER || !hasLocal){
+    const b=document.createElement('div'); b.className='boot'; b.textContent='جارِ تحميل التقرير…'; document.body.appendChild(b);
+    try{
+      const res=await fetch('data.json?v='+Date.now(),{cache:'no-store'}); if(!res.ok) throw 0;
+      S = migrate(await res.json()); b.remove();
+    }catch(e){ b.textContent='تعذّر تحميل بيانات التقرير (data.json).'; return; }
+    if (!VIEWER) save();
+  }
+  render(); if(!VIEWER) trimExistingLogos();
+}
+boot();
+</script>
+</body>
+</html>
