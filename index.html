@@ -619,6 +619,16 @@ function migrate(d){
     d.entities = (d.entities||[]).filter(n=> (d.logos||{})[n] || !titles.has(n));
   }
   d.version = 4; d.logos = d.logos || {}; d.entities = d.entities || [];
+  // تحويل التحديات التي كانت تُستمد تلقائياً إلى تحديات يدويّة محفوظة (مرة واحدة) — لكل الأشهر عدا آخر شهر
+  if (!d.chMat) {
+    const ms = Object.keys(d.reports||{}).map(Number).sort((x,y)=>x-y), last = ms[ms.length-1];
+    const nm = id => ((d.initiatives||[]).find(i=>i.id===id)||{}).name || '';
+    ms.forEach(m=>{ if (m===last) return; const r=d.reports[m]; r.challenges=r.challenges||[];
+      const covered=new Set(r.challenges.map(c=>c.iid).filter(Boolean).concat(r.hiddenAuto||[]));
+      (r.statuses||[]).filter(st=>(st.status==='onhold'||st.status==='atrisk')&&!covered.has(st.iid))
+        .forEach(st=>r.challenges.push({title:nm(st.iid), cause:st.update||'', treatment:'', iid:st.iid, severity:st.status==='atrisk'?'high':'medium'})); });
+    d.chMat = true;
+  }
   d.autoChallenges = false; d.customStatuses = d.customStatuses || []; registerCustomStatuses(d.customStatuses);
   if (!d.preparedBy || d.preparedBy==='مقبل المقبل') d.preparedBy = 'قطاع حلول الأعمال';
   Object.values(d.reports).forEach(r=>{
