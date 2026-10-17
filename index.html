@@ -915,15 +915,17 @@ function tenderTable(list, withMonth){
   return `<table class="tbl" style="margin-top:14px"><thead><tr><th></th><th>المشروع</th>${withMonth?'<th>الشهر</th>':''}<th>الحالة</th><th>القيمة (ريال)</th></tr></thead><tbody>
     ${list.map(t=>`<tr><td style="width:52px">${logoBox(t.client,'',t.name)}</td><td><b>${esc(t.name)}</b></td>${withMonth?`<td>${MONTHS[t.m-1]}</td>`:''}<td>${projBadge(t.kind)}</td><td class="num">${t.value!=null?fmt(t.value):'—'}</td></tr>`).join('')}</tbody></table>`;
 }
-function projCards(aw,ac,cl,labels){
-  const c=(k,list,l)=>`<div class="card fin hov" style="text-align:center;border-top:3px solid ${PROJ[k].c}"><div class="l">${l}</div><div class="v num" data-count="${list.length}">${list.length}</div><div class="note">${list.length?`بقيمة <span class="num">${fmt(sum(list))}</span> ريال`:'—'}</div></div>`;
+function projCards(aw,ac,cl,labels,noList){
+  const c=(k,list,l)=>{ const hasV=list.some(x=>x.value!=null&&x.value!=='');
+    const items=(list.length&&!noList)?`<div class="fl" style="text-align:right">${list.map(x=>`<div class="fl-r" style="grid-template-columns:auto 1fr auto">${logoBox(x.client,'sm',x.name)}<span class="fl-n">${esc(x.name||'—')}</span><b class="num">${x.value!=null&&x.value!==''?fmt(x.value):''}</b></div>`).join('')}</div>`:'';
+    return `<div class="card fin hov" style="text-align:center;border-top:3px solid ${PROJ[k].c}"><div class="l">${l}</div><div class="v num" data-count="${list.length}">${list.length}</div><div class="note">${hasV?`بقيمة <span class="num">${fmt(sum(list))}</span> ريال`:(list.length?'':'—')}</div>${items}</div>`; };
   return `<div class="grid g3">${c('awarded',aw,labels[0])}${c('active',ac,labels[1])}${c('closed',cl,labels[2])}</div>`;
 }
 function secTenders(m,r,idx){
   const t=r.tenders||[], aw=t.filter(x=>x.kind==='awarded'), ac=t.filter(x=>x.kind==='active'), cl=t.filter(x=>x.kind==='closed');
   return `<section class="sec">${secHead(idx,'المشاريع', t.length||null, `editTenders(${m})`, reviewChip(m,'tenders'))}
     ${projCards(aw,ac,cl,['تمت الترسية هذا الشهر','المشاريع النشطة','أُغلقت هذا الشهر'])}
-    ${t.length?tenderTable([...aw,...ac,...cl]):`<div class="empty" style="margin-top:12px">لا توجد مشاريع مسجّلة لهذا الشهر</div>`}</section>`;
+    ${t.length?'':`<div class="empty" style="margin-top:12px">لا توجد مشاريع مسجّلة لهذا الشهر</div>`}</section>`;
 }
 function challengesList(m,r){
   const manual=(r.challenges||[]).map(c=>({...c,auto:false}));
@@ -1009,7 +1011,7 @@ function yearTenders(idx){
   const all=allTenders(), aw=all.filter(t=>t.kind==='awarded'), cl=all.filter(t=>t.kind==='closed'), lm=lastMonth(),
     ac=lm?(S.reports[lm].tenders||[]).filter(t=>t.kind==='active').map(t=>({...t,m:lm})):[];
   return `<section class="sec">${secHead(idx,'مشاريع السنة')}
-    ${projCards(aw,ac,cl,['تمت ترسيتها خلال السنة','النشطة (آخر تقرير)','أُغلقت خلال السنة'])}
+    ${projCards(aw,ac,cl,['تمت ترسيتها خلال السنة','النشطة (آخر تقرير)','أُغلقت خلال السنة'],true)}
     ${(aw.length||ac.length||cl.length)?tenderTable([...aw,...ac,...cl],true):'<div class="empty" style="margin-top:12px">لا توجد مشاريع مسجّلة حتى الآن</div>'}</section>`;
 }
 
