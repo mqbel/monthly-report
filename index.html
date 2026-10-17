@@ -918,7 +918,7 @@ function secTenders(m,r,idx){
 function challengesList(m,r){
   const manual=(r.challenges||[]).map(c=>({...c,auto:false}));
   if (!S.autoChallenges) return manual;
-  const covered=new Set(manual.map(c=>c.iid).filter(Boolean));
+  const covered=new Set(manual.map(c=>c.iid).filter(Boolean).concat(r.hiddenAuto||[]));
   return manual.concat(r.statuses.filter(s=>(s.status==='onhold'||s.status==='atrisk')&&!covered.has(s.iid)).map(s=>({title:ini(s.iid).name, cause:s.update, treatment:'', iid:s.iid, severity:s.status==='atrisk'?'high':'medium', auto:true})));
 }
 function secChallenges(m,r,idx){
@@ -1220,16 +1220,26 @@ function editTenders(m){
 }
 // Challenges
 function cRow(c,m){ const r=S.reports[m];
-  return `<div class="frow" style="grid-template-columns:1.1fr 1.4fr 1.4fr .9fr .8fr auto"><input data-f="title" placeholder="العنوان" value="${esc(c.title)}">
+  return `<div class="frow" ${c.auto?`data-auto="${esc(c.iid)}" data-orig="${esc(JSON.stringify([c.title,c.cause||'',c.severity]))}"`:''} style="grid-template-columns:1.1fr 1.4fr 1.4fr .9fr .8fr auto"><div style="display:grid;gap:4px"><input data-f="title" placeholder="العنوان" value="${esc(c.title)}">${c.auto?'<span class="auto-tag" style="font-size:11px">تلقائي من حالة المبادرة</span>':''}</div>
     <textarea data-f="cause" placeholder="وصف التحدّي">${esc(c.cause||'')}</textarea><textarea data-f="treatment" placeholder="المعالجة">${esc(c.treatment||'')}</textarea>
     <select data-f="iid"><option value="">— بدون ربط —</option>${r.statuses.map(s=>`<option value="${s.iid}" ${c.iid===s.iid?'selected':''}>${esc(ini(s.iid).name)}</option>`).join('')}</select>
     <select data-f="severity">${Object.keys(SEVERITY).map(k=>`<option value="${k}" ${c.severity===k?'selected':''}>${SEVERITY[k].l}</option>`).join('')}</select>${rowTools()}</div>`; }
 function editChallenges(m){
   const r=S.reports[m], autos=challengesList(m,r).filter(c=>c.auto);
   modal(`التحديات والمعالجات — ${MONTHS[m-1]}`, `<label style="display:flex;gap:8px;align-items:center;margin-bottom:10px;font-size:14px"><input type="checkbox" id="autoCh" ${S.autoChallenges?'checked':''}> إظهار المبادرات المعلّقة والمتعثّرة تلقائياً كتحديات</label>
-    ${autos.length?`<p class="hint">${autos.length} تحدٍّ مُستمَد تلقائياً. لإضافة معالجة لها: <button class="btn sm" type="button" onclick="adoptAutos(${m})">تحويلها إلى يدويّة</button></p>`:''}
-    <div id="cl">${(r.challenges||[]).map(c=>cRow(c,m)).join('')}</div><button class="btn" onclick="addRow('cl',cRow({title:'',cause:'',treatment:'',iid:'',severity:'medium'},${m}))">＋ إضافة تحدٍّ</button>`,
-    ov=>{ markReviewed(m,'challenges'); S.autoChallenges=ov.querySelector('#autoCh').checked; r.challenges=[...ov.querySelectorAll('#cl .frow')].map(f=>({title:f.querySelector('[data-f=title]').value.trim(),cause:f.querySelector('[data-f=cause]').value.trim(),treatment:f.querySelector('[data-f=treatment]').value.trim(),iid:f.querySelector('[data-f=iid]').value,severity:f.querySelector('[data-f=severity]').value})).filter(c=>c.title||c.cause); }, true);
+    <p class="hint">التحديات المعلَّمة «تلقائي» مأخوذة من حالة المبادرة؛ احذفها بـ ✕ لإخفائها من هذا الشهر، أو أضف لها معالجة لتصبح يدويّة.</p>
+    <div id="cl">${(r.challenges||[]).map(c=>cRow(c,m)).join('')}${autos.map(c=>cRow(c,m)).join('')}</div><button class="btn" onclick="addRow('cl',cRow({title:'',cause:'',treatment:'',iid:'',severity:'medium'},${m}))">＋ إضافة تحدٍّ</button>`,
+    ov=>{ markReviewed(m,'challenges'); S.autoChallenges=ov.querySelector('#autoCh').checked;
+      const kept=new Set(), out=[];
+      ov.querySelectorAll('#cl .frow').forEach(f=>{
+        const c={title:f.querySelector('[data-f=title]').value.trim(),cause:f.querySelector('[data-f=cause]').value.trim(),treatment:f.querySelector('[data-f=treatment]').value.trim(),iid:f.querySelector('[data-f=iid]').value,severity:f.querySelector('[data-f=severity]').value};
+        if (f.dataset.auto){ kept.add(f.dataset.auto);
+          if (!c.treatment && f.dataset.orig===JSON.stringify([c.title,c.cause,c.severity]) && c.iid===f.dataset.auto) return; }
+        if (c.title||c.cause) out.push(c); });
+      r.challenges=out;
+      const hid=new Set(r.hiddenAuto||[]); autos.forEach(a=>{ if(!kept.has(a.iid)) hid.add(a.iid); });
+      r.hiddenAuto=[...hid];
+    }, true);
 }
 function adoptAutos(m){ const r=S.reports[m]; challengesList(m,r).filter(c=>c.auto).forEach(c=>addRow('cl',cRow({title:c.title,cause:c.cause,treatment:'',iid:c.iid,severity:c.severity},m))); }
 
