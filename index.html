@@ -409,6 +409,7 @@ body.tvmode .edit-only,body.tvmode .ktools{display:none!important}
       </div>
     </div>
     <div class="tools">
+      <button class="btn owner-only" onclick="publishNow()" title="نشر التعديلات على رابط المعاينة" style="position:relative">🚀 نشر<i id="pubDot" title="توجد تعديلات غير منشورة" style="display:none;position:absolute;top:-4px;inset-inline-start:-4px;width:11px;height:11px;border-radius:50%;background:#F15A3E;box-shadow:0 0 0 2px var(--bg,#fff)"></i></button>
       <button class="btn owner-only" id="btnEdit" onclick="toggleEdit()">✎ وضع التحرير</button>
       <button class="btn" onclick="startTV()">📺 وضع العرض</button>
       <button class="btn" onclick="window.print()">🖨 طباعة / PDF</button>
@@ -425,6 +426,7 @@ body.tvmode .edit-only,body.tvmode .ktools{display:none!important}
           <button onclick="openSettings()">⚙ الإعدادات والمستهدفات والشعارات</button>
           <button onclick="exportJSON()">⬇ حفظ نسخة احتياطيّة (ملف)</button>
           <button onclick="document.getElementById('imp').click()">⬆ استيراد نسخة</button>
+          <button onclick="publishNow()">🚀 نشر التحديثات على رابط المعاينة</button>
           <button onclick="exportPublish()">📤 تصدير ملف النشر (data.json)</button>
           <hr>
           <button onclick="resetAll()">⟲ استرجاع البيانات الأصليّة</button>
@@ -646,7 +648,7 @@ function migrate(d){
   });
   return d;
 }
-function save(){ if (VIEWER) return; S.savedAt=new Date().toISOString(); try{ localStorage.setItem(STORE_KEY, JSON.stringify(S)); }catch(e){ toast('تعذّر الحفظ — مساحة المتصفح ممتلئة (قلّل حجم الشعارات)'); } }
+function save(){ if (VIEWER) return; S.savedAt=new Date().toISOString(); try{ localStorage.setItem(STORE_KEY, JSON.stringify(S)); setTimeout(pubIndicator,0); }catch(e){ toast('تعذّر الحفظ — مساحة المتصفح ممتلئة (قلّل حجم الشعارات)'); } }
 
 // ═══════════ Helpers ═══════════
 const $ = s => document.querySelector(s);
@@ -1357,8 +1359,53 @@ function exportPublish(){
   setTimeout(()=>URL.revokeObjectURL(a.href),500);
   toast('تم تصدير data.json — ارفعه على المستودع ليتحدّث الرابط المنشور');
 }
+// ═══════════ النشر المباشر على GitHub ═══════════
+const GH_TOKEN_KEY = 'one_gh_token';
+function ghRepo(){
+  const h=location.hostname, seg=location.pathname.split('/').filter(Boolean)[0];
+  if (/\.github\.io$/.test(h) && seg) return { owner:h.split('.')[0], repo:seg };
+  return { owner:'mqbel', repo:'monthly-report' };
+}
+function b64utf8(str){ const bytes=new TextEncoder().encode(str); let bin=''; for(let i=0;i<bytes.length;i+=0x8000) bin+=String.fromCharCode.apply(null, bytes.subarray(i,i+0x8000)); return btoa(bin); }
+function askToken(then){
+  const {owner,repo}=ghRepo();
+  modal('ربط النشر بـ GitHub (مرة واحدة)', `<p class="hint">لنشر تعديلاتك مباشرة على رابط المعاينة، أنشئ «مفتاح وصول» خاصاً بهذا المستودع فقط ثم الصقه هنا. يُحفظ في هذا المتصفح فقط.</p>
+    <ol style="line-height:2;font-size:14px;margin:0 0 12px;padding-inline-start:20px">
+      <li>افتح <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">صفحة إنشاء المفتاح في GitHub</a></li>
+      <li>الاسم: <b>monthly-report</b> · المدة: سنة</li>
+      <li>Repository access ← <b>Only select repositories</b> ← اختر <b>${esc(owner)}/${esc(repo)}</b></li>
+      <li>Permissions ← Repository ← <b>Contents: Read and write</b></li>
+      <li>اضغط Generate token وانسخه والصقه هنا</li>
+    </ol>
+    <div class="fld"><label>المفتاح</label><input id="ghTok" class="ltr" type="password" placeholder="github_pat_…" autocomplete="off"></div>`,
+    ov=>{ const t=ov.querySelector('#ghTok').value.trim(); if(!t){ toast('لم يُدخل مفتاح'); return; } localStorage.setItem(GH_TOKEN_KEY,t); setTimeout(()=>then&&then(),50); });
+}
+async function publishNow(){
+  closeMenu();
+  const tok=localStorage.getItem(GH_TOKEN_KEY); if(!tok) return askToken(publishNow);
+  if (!confirm('نشر بياناتك الحالية على رابط المعاينة؟ سيرى كل من لديه الرابط هذه النسخة.')) return;
+  const {owner,repo}=ghRepo(), url=`https://api.github.com/repos/${owner}/${repo}/contents/data.json`;
+  const H={Authorization:'Bearer '+tok, Accept:'application/vnd.github+json'};
+  toast('جارٍ النشر…');
+  try{
+    let sha; const g=await fetch(url+'?ref=main&t='+Date.now(),{headers:H,cache:'no-store'});
+    if (g.status===401||g.status===403){ localStorage.removeItem(GH_TOKEN_KEY); alert('المفتاح غير صالح أو بلا صلاحية «Contents: Read and write». أدخل مفتاحاً جديداً.'); return askToken(publishNow); }
+    if (g.ok) sha=(await g.json()).sha;
+    const d=JSON.parse(JSON.stringify(S)); d.publishedAt=new Date().toISOString();
+    const p=await fetch(url,{method:'PUT',headers:{...H,'Content-Type':'application/json'},body:JSON.stringify({message:'تحديث بيانات التقرير '+d.publishedAt.slice(0,10),content:b64utf8(JSON.stringify(d)),branch:'main',...(sha?{sha}:{})})});
+    if (!p.ok){ const e=await p.json().catch(()=>({})); if(p.status===401||p.status===403||p.status===404){ localStorage.removeItem(GH_TOKEN_KEY); } alert('تعذّر النشر: '+(e.message||p.status)); return; }
+    S.publishedAt=d.publishedAt; S.savedAt=d.publishedAt; try{ localStorage.setItem(STORE_KEY, JSON.stringify(S)); }catch(e){}
+    toast('تم النشر ✓ — يظهر على رابط المعاينة خلال دقيقة تقريباً');
+    pubIndicator();
+  }catch(e){ alert('تعذّر الاتصال بـ GitHub: '+e.message); }
+}
+function pubIndicator(){
+  const el=document.getElementById('pubDot'); if(!el) return;
+  const dirty = !S.publishedAt || (S.savedAt && S.savedAt>S.publishedAt);
+  el.style.display = (VIEWER||!dirty)?'none':'';
+}
 async function boot(){
-  if (!HOSTED){ render(); trimExistingLogos(); return; }
+  if (!HOSTED){ render(); trimExistingLogos(); pubIndicator(); return; }
   if (VIEWER) document.body.classList.add('viewer');
   const hasLocal = !!localStorage.getItem(STORE_KEY);
   if (VIEWER || !hasLocal){
@@ -1367,9 +1414,9 @@ async function boot(){
       const res=await fetch('data.json?v='+Date.now(),{cache:'no-store'}); if(!res.ok) throw 0;
       S = migrate(await res.json()); b.remove();
     }catch(e){ b.textContent='تعذّر تحميل بيانات التقرير (data.json).'; return; }
-    if (!VIEWER) save();
+    if (!VIEWER){ S.savedAt=S.publishedAt||new Date().toISOString(); localStorage.setItem(STORE_KEY, JSON.stringify(S)); }
   }
-  render(); if(!VIEWER) trimExistingLogos();
+  render(); if(!VIEWER){ trimExistingLogos(); pubIndicator(); }
 }
 boot();
 </script>
