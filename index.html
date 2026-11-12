@@ -1405,11 +1405,13 @@ async function publishNow(){
   toast('جارٍ النشر…');
   try{
     let sha; const g=await fetch(url+'?ref=main&t='+Date.now(),{headers:H,cache:'no-store'});
-    if (g.status===401||g.status===403){ localStorage.removeItem(GH_TOKEN_KEY); alert('المفتاح غير صالح أو بلا صلاحية «Contents: Read and write». أدخل مفتاحاً جديداً.'); return askToken(publishNow); }
+    if (g.status===401){ localStorage.removeItem(GH_TOKEN_KEY); alert('المفتاح غير صالح أو منتهي. أدخل مفتاحاً جديداً.'); return askToken(publishNow); }
     if (g.ok) sha=(await g.json()).sha;
     const d=JSON.parse(JSON.stringify(S)); d.publishedAt=new Date().toISOString();
     const p=await fetch(url,{method:'PUT',headers:{...H,'Content-Type':'application/json'},body:JSON.stringify({message:'تحديث بيانات التقرير '+d.publishedAt.slice(0,10),content:b64utf8(JSON.stringify(d)),branch:'main',...(sha?{sha}:{})})});
-    if (!p.ok){ const e=await p.json().catch(()=>({})); if(p.status===401||p.status===403||p.status===404){ localStorage.removeItem(GH_TOKEN_KEY); } alert('تعذّر النشر: '+(e.message||p.status)); return; }
+    if (!p.ok){ const e=await p.json().catch(()=>({})); if(p.status===401){ localStorage.removeItem(GH_TOKEN_KEY); alert('المفتاح غير صالح أو منتهي — أدخل مفتاحاً جديداً.'); return askToken(publishNow); }
+      if(p.status===403||p.status===404){ alert('المفتاح محفوظ، لكن ينقصه صلاحية الكتابة على المستودع.\n\nفي GitHub افتح المفتاح ← Edit ← تأكّد من:\n• Repository access: اختيار monthly-report\n• Permissions ← Contents: Read and write\nثم Update، وارجع اضغط «نشر» مرة ثانية (لن يُطلب المفتاح).'); return; }
+      alert('تعذّر النشر: '+(e.message||p.status)); return; }
     S.publishedAt=d.publishedAt; S.savedAt=d.publishedAt; try{ localStorage.setItem(STORE_KEY, JSON.stringify(S)); }catch(e){}
     toast('تم النشر ✓ — يظهر على رابط المعاينة خلال دقيقة تقريباً');
     pubIndicator();
