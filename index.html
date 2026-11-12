@@ -1157,7 +1157,23 @@ function workRow(w, m){ const ph = m ? workPhase(m,w) : (w.phase||'started');
 function editWorks(m){
   const r=S.reports[m];
   modal(`أعمال ${MONTHS[m-1]}`, `<p class="hint">اختر الجهة من مربّع الشعار (▾)، وحدّد لكل بند: «بدأت هذا الشهر» أو «مستمر العمل فيها». في التقرير يظهر شعار الجهة فقط.</p><div id="wl">${r.works.map(w=>workRow(w,m)).join('')}</div><button class="btn" onclick="addRow('wl',workRow({title:'',entity:'',desc:'',phase:'started'}))">＋ إضافة بند</button>`,
-    ov=>{ markReviewed(m,'works'); r.works=[...ov.querySelectorAll('#wl .frow')].map(f=>({title:f.querySelector('[data-f=title]').value.trim(),entity:f.querySelector('[data-f=entity]').value.trim(),desc:f.querySelector('[data-f=desc]').value.trim(),phase:f.querySelector('[data-f=phase]').value})).filter(w=>w.title||w.desc); }, true);
+    ov=>{ markReviewed(m,'works'); r.works=[...ov.querySelectorAll('#wl .frow')].map(f=>({title:f.querySelector('[data-f=title]').value.trim(),entity:f.querySelector('[data-f=entity]').value.trim(),desc:f.querySelector('[data-f=desc]').value.trim(),phase:f.querySelector('[data-f=phase]').value})).filter(w=>w.title||w.desc);
+      const added=syncNewWorksToStatuses(m); if(added.length){ toast(`أُضيفت ${added.length} إلى «حالة المبادرات» — أكمل بياناتها`); setTimeout(()=>editStatuses(m),350); } }, true);
+}
+// كل عمل جديد «بدأ هذا الشهر» يُضاف تلقائياً إلى حالة المبادرات في نفس الشهر
+function normName(t){ return String(t||'').replace(/[\u064B-\u0652\u0640]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/\s+/g,' ').trim(); }
+function syncNewWorksToStatuses(m){
+  const r=S.reports[m], added=[]; r.statuses=r.statuses||[];
+  const inMonth=new Set(r.statuses.map(st=>normName(ini(st.iid).name)));
+  r.works.filter(w=>w.title && workPhase(m,w)==='started').forEach(w=>{
+    const key=normName(w.title); if(!key || inMonth.has(key)) return;
+    let i=S.initiatives.find(x=>normName(x.name)===key);
+    if(!i){ i={id:'i'+Date.now()+Math.floor(Math.random()*1000), name:w.title, entity:w.entity||''}; S.initiatives.push(i); }
+    else if(!i.entity && w.entity) i.entity=w.entity;
+    r.statuses.push({iid:i.id, status:'new', progress:null, update:w.desc||''});
+    inMonth.add(key); added.push(w.title);
+  });
+  return added;
 }
 // Statuses
 const CUSTOM_COLORS=['#e86fb5','#7bd389','#5aa9ff','#ffb4a2','#c7a6ff','#9be7e1','#d4b483','#ff8fab'];
