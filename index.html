@@ -192,6 +192,17 @@ body.editing .lg{cursor:pointer;outline:1px dashed var(--a1);outline-offset:2px}
 .badge{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;font-size:12px;font-weight:800;padding:3px 11px;border-radius:20px;
   color:var(--c);background:color-mix(in srgb,var(--c) 16%,transparent);border:1px solid color-mix(in srgb,var(--c) 45%,transparent)}
 .badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--c);box-shadow:0 0 6px var(--c)}
+.ic{display:flex;flex-direction:column;gap:10px;border-top:3px solid var(--sc)}
+.ic[onclick]{cursor:pointer}
+.ic .eh{align-items:flex-start}
+.ic-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:5px}
+.ic-tags:empty{display:none}
+.ic-b{background:var(--panel2);border:1px solid var(--line2);border-radius:12px;padding:9px 12px}
+.ic-b .lbl{display:block;font-size:11px;font-weight:800;color:var(--soft);margin-bottom:3px;letter-spacing:.2px}
+.ic-p{margin:0;color:var(--ink);font-size:14px;line-height:1.75}
+.ic-ul{margin:0;padding-inline-start:18px;color:var(--ink);font-size:14px;line-height:1.75}
+.ic-ul li::marker{color:var(--sc)}
+.ic .prog{margin-top:auto}
 .st{cursor:pointer;display:flex;flex-direction:column;gap:8px}
 .st .up{font-size:14px;color:var(--muted);line-height:1.75;flex:1}
 .prog{display:flex;align-items:center;gap:10px}
@@ -816,12 +827,11 @@ function monthSections(m){
   const ctx = { m, r, pm, pr: pm?S.reports[pm]:null };
   return [
     reviewBanner(m),
-    secWorks(m,r,'01'),
-    secStatus(m,r,'02'),
-    secFinancial(m,r,'03'),
-    secTenders(m,r,'04'),
-    secChallenges(m,r,'05'),
-    kpiPanel('month', ctx, `لوحة مؤشرات ${MONTHS[m-1]}`, '06')
+    secCombined(m,r,'01'),
+    secFinancial(m,r,'02'),
+    secTenders(m,r,'03'),
+    secChallenges(m,r,'04'),
+    kpiPanel('month', ctx, `لوحة مؤشرات ${MONTHS[m-1]}`, '05')
   ];
 }
 function workCard(w){
@@ -865,6 +875,49 @@ function secStatus(m,r,idx,forTV){
     <div class="grid g3">${g.items.map(s=>statusCard(m,s)).join('')}</div>`).join('');
   const body = r.statuses.length ? chips + (grouped||'<div class="empty">لا توجد مبادرات بهذه الحالة</div>') : `<div class="empty">لا توجد مبادرات</div>`;
   return `<section class="sec" id="s-status">${secHead(idx,'حالة المبادرات والمشاريع', r.statuses.length, `editStatuses(${m})`, reviewChip(m,'statuses'))}${body}</section>`;
+}
+// ═══ بطاقة موحّدة: أعمال الشهر + حالة المبادرة ═══
+function combinedItems(m,r){
+  const works=(r.works||[]).map((w,ix)=>({w,ix,k:normName(w.title),used:false}));
+  const match=(name)=>{ const k=normName(name); if(!k) return null;
+    let c=works.find(x=>!x.used&&x.k===k) || works.find(x=>!x.used&&x.k.length>=3&&k.length>=3&&(x.k.includes(k)||k.includes(x.k)));
+    if(c){ c.used=true; return c.w; } return null; };
+  const out=(r.statuses||[]).map(s=>{ const i=ini(s.iid); return {s, i, w:match(i.name)}; });
+  works.filter(x=>!x.used).forEach(x=>out.push({s:null, i:{name:x.w.title, entity:x.w.entity}, w:x.w}));
+  return out;
+}
+function isNewItem(m,it){ if (it.w) return workPhase(m,it.w)==='started'; const pm=prevReportMonth(m); return !!(pm && it.s && !S.reports[pm].statuses.some(x=>x.iid===it.s.iid)); }
+function bulletText(t){ const parts=String(t||'').split(/\n+|(?:^|\s)[-–•]\s+/).map(x=>x.replace(/^[-–•]\s*/,'').trim()).filter(Boolean);
+  return parts.length>1 ? `<ul class="ic-ul">${parts.map(p=>`<li>${esc(p)}</li>`).join('')}</ul>` : `<p class="ic-p">${esc(parts[0]||'')}</p>`; }
+function combinedCard(m,it){
+  const {s,w,i}=it, st=s?(STATUSES[s.status]||STATUSES.active):null, has=s&&s.progress!=null, isNew=isNewItem(m,it);
+  const workTxt=w&&w.desc?w.desc:'', upd=s&&s.update?s.update:'';
+  const showUpd = upd && normName(upd)!==normName(workTxt);
+  return `<div class="card hov ic" style="--sc:${st?st.c:'var(--line2)'}" ${s?`onclick="showHistory('${s.iid}')" title="اضغط لعرض سجلّ المبادرة"`:''}>
+    <div class="eh">${logoBox(i.entity,'',i.name)}<div class="t"><h3>${esc(i.name)}</h3>
+      <div class="ic-tags">${isNew?'<span class="chg new">● بدأ هذا الشهر</span>':(w?'<span class="chg">مستمر</span>':'')}${s?changeTag(m,s).replace('<span class="chg new">جديد هذا الشهر</span>',''):''}</div></div>
+      ${s?statusBadge(s.status):'<span class="badge" style="--c:var(--muted)">بدون حالة</span>'}</div>
+    ${workTxt?`<div class="ic-b"><span class="lbl">أعمال الشهر</span>${bulletText(workTxt)}</div>`:''}
+    ${showUpd?`<div class="ic-b"><span class="lbl">آخر مستجد</span>${bulletText(upd)}</div>`:''}
+    ${!workTxt&&!showUpd?'<div class="ic-b"><span class="empty">لا توجد أعمال أو مستجدات مسجّلة</span></div>':''}
+    ${s?`<div class="prog ${has?'':'none'}"><div class="bar"><i style="width:${has?Math.min(100,s.progress):0}%"></i></div><b class="${has?'num':''}">${has?s.progress+'%':'لم تُحدَّد'}</b></div>`:''}
+  </div>`;
+}
+function secCombined(m,r,idx,forTV,subset){
+  const all=combinedItems(m,r), items=subset||all;
+  const cnt={}; all.forEach(it=>{ const k=it.s?it.s.status:'_none'; cnt[k]=(cnt[k]||0)+1; });
+  const chips = forTV ? '' : `<div class="chips no-print"><span class="chip ${!statusFilter?'active':''}" onclick="setFilter(null)">الكل · ${all.length}</span>
+    ${STATUS_ORDER.filter(k=>cnt[k]&&STATUSES[k]).map(k=>`<span class="chip ${statusFilter===k?'active':''}" style="color:${statusFilter===k?STATUSES[k].c:''}" onclick="setFilter('${k}')"><i style="background:${STATUSES[k].c};color:${STATUSES[k].c}"></i>${STATUSES[k].l} · ${cnt[k]}</span>`).join('')}</div>`;
+  const list = items.filter(it=>forTV || !statusFilter || (it.s&&it.s.status===statusFilter));
+  const grp=(key,label,c,arr)=>arr.length?`<div class="grp-h" style="--c:${c}"><i></i><b>${label}</b><span class="num">${arr.length}</span><span class="ln"></span></div><div class="grid g3">${arr.map(it=>combinedCard(m,it)).join('')}</div>`:'';
+  const fresh=list.filter(it=>isNewItem(m,it)), rest=list.filter(it=>!isNewItem(m,it));
+  let html=grp('new','بدأت هذا الشهر','#3fdc97',fresh);
+  STATUS_ORDER.filter(k=>k!=='onhold').forEach(k=>{ if(STATUSES[k]) html+=grp(k,STATUSES[k].l,STATUSES[k].c,rest.filter(it=>it.s&&it.s.status===k)); });
+  html+=grp('none','أعمال بدون حالة','#8aa0aa',rest.filter(it=>!it.s));
+  html+=grp('onhold',STATUSES.onhold.l,STATUSES.onhold.c,rest.filter(it=>it.s&&it.s.status==='onhold'));
+  const body = all.length ? chips + (html||'<div class="empty">لا توجد مبادرات بهذه الحالة</div>') : `<div class="empty">لا توجد أعمال أو مبادرات مسجّلة لهذا الشهر</div>`;
+  const extra = reviewChip(m,'works')+reviewChip(m,'statuses')+`<button class="btn sm edit-only" onclick="editWorks(${m})">✎ الأعمال</button>`;
+  return `<section class="sec" id="s-status">${secHead(idx,`أعمال ${MONTHS[m-1]} وحالة المبادرات`, all.length, `editStatuses(${m})`, extra)}${body}</section>`;
 }
 function setFilter(k){ statusFilter=k; render(); setTimeout(()=>document.getElementById('s-status')?.scrollIntoView({block:'start',behavior:'smooth'}),0); }
 
@@ -1343,9 +1396,10 @@ function startTV(){
   let slides=[], label='';
   if (v==='year'){ const lm=lastMonth()||1; label=`ملخّص سنة ${S.year}`; slides=[cover(label), ...yearSections()]; }
   else { const m=v, r=S.reports[m]; label=`تقرير ${MONTHS[m-1]} ${S.year}`; const pm=prevReportMonth(m);
-    slides=[cover(label), secWorks(m,r,'01')];
-    { const srt=[...r.statuses].sort((x,y)=>STATUS_ORDER.indexOf(x.status)-STATUS_ORDER.indexOf(y.status)); for(let k=0;k<srt.length;k+=6) slides.push(secStatus(m,{...r,statuses:srt.slice(k,k+6)},'02',true)); }
-    slides.push(secFinancial(m,r,'03'), secTenders(m,r,'04'), secChallenges(m,r,'05'), kpiPanel('month',{m,r,pm,pr:pm?S.reports[pm]:null},`لوحة مؤشرات ${MONTHS[m-1]}`,'06')); }
+    slides=[cover(label)];
+    { const all=combinedItems(m,r), ord=it=>isNewItem(m,it)?-1:(it.s?STATUS_ORDER.indexOf(it.s.status):STATUS_ORDER.length-1.5);
+      const srt=[...all].sort((x,y)=>ord(x)-ord(y)); for(let k=0;k<srt.length;k+=6) slides.push(secCombined(m,r,'01',true,srt.slice(k,k+6))); }
+    slides.push(secFinancial(m,r,'02'), secTenders(m,r,'03'), secChallenges(m,r,'04'), kpiPanel('month',{m,r,pm,pr:pm?S.reports[pm]:null},`لوحة مؤشرات ${MONTHS[m-1]}`,'05')); }
   editing=wasEd;
   $('#tvLogo').innerHTML=LOGO; $('#tvMonth').textContent=label;
   $('#tvStage').innerHTML=slides.map(s=>`<div class="tv-slide"><div class="tv-fit">${s}</div></div>`).join('');
